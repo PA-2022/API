@@ -9,12 +9,12 @@ phases:
       - apt-get install apt-transport-https gnupg -y
       - pip install codiga
     finally:
-    - echo Preliminary tasks done
+      - echo Preliminary tasks done
   pre_build:
-  commands:
-    - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" --max-timeout-sec 60
-  finally:
-    - echo pre-build done
+    commands:
+      - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" --max-timeout-sec 60
+    finally:
+      - echo pre-build done
   build:
     commands:
       - echo Build started on `date`
