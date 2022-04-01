@@ -2,11 +2,11 @@ version: 0.2
 
 phases:
   install:
-    #runtime-versions:
-    #  java: corretto11
+    runtime-versions:
+      java: corretto11
     commands:
-      - sudo apt-get update -y
-      - sudo apt-get install apt-transport-https gnupg -y
+      - apt-get update 
+      - apt-get install apt-transport-https gnupg 
       - pip install codiga
     finally:
       - echo Preliminary tasks done
