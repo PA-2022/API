@@ -4,7 +4,6 @@ phases:
   install:
     runtime-versions:
       java: corretto11
-  pre_build:
     commands:
       - apt-get update -y
       - apt-get install apt-transport-https gnupg -y
