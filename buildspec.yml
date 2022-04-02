@@ -12,7 +12,7 @@ phases:
       - echo Preliminary tasks done
   pre_build:
     commands:
-      - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" --max-timeout-sec 60
+      - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" 
     finally:
       - echo pre-build done
   build:
