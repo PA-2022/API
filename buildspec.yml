@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto18
+      java: corretto11
     commands:
       - apt-get update -y
       - apt-get install apt-transport-https gnupg -y
