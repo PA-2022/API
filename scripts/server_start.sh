@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar target/codeup/codeup.jar
+java -jar ./codeup/out/artifacts//codeup_jar/codeup.jar

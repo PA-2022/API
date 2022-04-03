@@ -12,7 +12,7 @@ phases:
       - echo Preliminary tasks done
   pre_build:
     commands:
-      - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" 
+      - codiga-check-quality --project "${CODIGA_PROJECT_NAME}" --min-quality-score 75  --sha "${CODEBUILD_RESOLVED_SOURCE_VERSION}" --max-timeout-sec 60
     finally:
       - echo pre-build done
   build:
@@ -24,5 +24,5 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - target/codeup/codeup.jar
+    - target/API-1.0.jar
 
