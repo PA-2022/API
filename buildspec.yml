@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk18
+      java: corretto11
     commands:
       - apt-get update -y
       - apt-get install apt-transport-https gnupg -y
@@ -18,7 +18,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
+      #- mvn install
   post_build:
     commands:
       - echo Build completed on `date`
