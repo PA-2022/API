@@ -18,7 +18,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd codeup && mvn install
+      - mvn install
   post_build:
     commands:
       - echo Build completed on `date`
