@@ -8,6 +8,8 @@ phases:
       - apt-get update -y
       - apt-get install apt-transport-https gnupg -y
       - pip install codiga
+      - apt-get update -y
+      - apt-get install -y maven
     finally:
       - echo Preliminary tasks done
   pre_build:
@@ -18,7 +20,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn clean install
+      - mvn install
   post_build:
     commands:
       - echo Build completed on `date`
