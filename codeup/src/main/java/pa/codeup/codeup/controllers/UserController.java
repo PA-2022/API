@@ -9,10 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.UserRepository;
 
-@Controller
+@RestController
 public class UserController {
 
 	@Autowired
@@ -22,6 +23,11 @@ public class UserController {
 	public String viewHomePage() {
 		System.out.println("test");
 		return "index";
+	}
+
+	@GetMapping("/")
+	public String health() {
+		return "Hello";
 	}
 	
 	@GetMapping("/register")
