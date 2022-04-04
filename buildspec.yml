@@ -5,6 +5,7 @@ phases:
       java: corretto11
   pre_build:
     commands: 
+      - cd codeup
       - echo In the pre_build phase...
       - mvn test
   build: 
