@@ -8,7 +8,6 @@ phases:
       - apt-get update -y
       - apt-get install apt-transport-https gnupg -y
       - pip install codiga
-      - apt-get update -y
       - apt-get install -y maven
     finally:
       - echo Preliminary tasks done
