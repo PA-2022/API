@@ -27,7 +27,7 @@ public class UserController {
 
 	@GetMapping("/")
 	public String health() {
-		return "Hellooo";
+		return "Hellooooo";
 	}
 	
 	@GetMapping("/register")
