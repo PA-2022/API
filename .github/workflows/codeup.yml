@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: '18'
       - name: Build with Maven
-        run: cd codeup && mvn clean install
+        run: git pull origin test && cd codeup && mvn clean install
       - name: Upload JAR
         uses: actions/upload-artifact@v2
         with:
