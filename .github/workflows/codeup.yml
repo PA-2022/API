@@ -19,6 +19,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '18'
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GIT_API_HOST }}
+          username: ${{ secrets.GIT_USER }}
+          password: ${{ secrets.GIT_TOKEN }}
+          port: ${{ secrets.SSH_PORT }}
+          script: cd codeup && ${{ secrets.SCRIPT}}
       - name: Build with Maven
         run: cd codeup && mvn clean install
       - name: Upload JAR
