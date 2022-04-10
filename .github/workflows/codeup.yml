@@ -19,13 +19,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '18'
-      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
-        with:
-          token: '${{ secrets.GIT_TOKEN }}'
-          actor: '${{ secrets.GIT_USER }}'
-          
-      - name: Retrieve changes 
-        run: git pull origin halisia
           
       - name: Build with Maven
         run: cd codeup && mvn clean install
