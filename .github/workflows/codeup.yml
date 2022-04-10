@@ -38,10 +38,8 @@ jobs:
           name: artifact
       - name: Checkout the files
         uses: actions/checkout@v2
-      - name: Check path
-        run: pwd && ls 
       - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@main
+        uses: easingthemes/ssh-deploy@halisia
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
