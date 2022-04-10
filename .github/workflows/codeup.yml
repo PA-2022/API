@@ -26,10 +26,10 @@ jobs:
         with:
           name: artifact
           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
-      - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@main
       - name: Launch jar file
         run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
