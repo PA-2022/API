@@ -15,20 +15,16 @@ jobs:
 #         working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
-      
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: '18'
-          
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
-          host: ${{ secrets.GIT_API_HOST }}
-          username: ${{ secrets.GIT_USER }}
-          password: ${{ secrets.GIT_TOKEN }}
-          port: ${{ secrets.SSH_PORT }}
-          script: cd codeup && ${{ secrets.SCRIPT}}
+          token: '${{ secrets.GIT_TOKEN }}'
+          
+      - name: Retrieve changes 
+        run: git pull origin halisia
           
       - name: Build with Maven
         run: cd codeup && mvn clean install
