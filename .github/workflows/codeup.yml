@@ -22,6 +22,7 @@ jobs:
       - uses: oleksiyrudenko/gha-git-credentials@v2-latest
         with:
           token: '${{ secrets.GIT_TOKEN }}'
+          actor: '${{ secrets.GIT_USER }}'
           
       - name: Retrieve changes 
         run: git pull origin halisia
