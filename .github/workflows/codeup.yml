@@ -1,4 +1,4 @@
-name: Deployment
+name: CodeUp Deployment
 on:
   push:
     branches:
@@ -10,9 +10,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./codeup
+#     defaults:
+#       run:
+#         working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK
@@ -20,22 +20,22 @@ jobs:
         with:
           java-version: '18'
       - name: Build with Maven
-        run: mvn clean install
-      - name: check path
-        run: pwd 
-      - name: move 
-        run: cd .. && pwd 
+        run: cd codeup && mvn clean install
       - name: Upload JAR
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: codeup-0.0.1-SNAPSHOT.jar   
+          path: ./target/codeup-0.0.1-SNAPSHOT.jar   
   deploy:
     needs: build
     name: Deploy to EC2 
     runs-on: ubuntu-latest
 
     steps:
+#       - name: Download JAR
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: artifact
       - name: Checkout the files
         uses: actions/checkout@v2
       - name: Deploy to Server 1
