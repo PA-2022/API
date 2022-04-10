@@ -20,9 +20,11 @@ jobs:
         with:
           java-version: '18'
       - name: Build with Maven
-        run: mvn clean install && cd ..
+        run: mvn clean install
       - name: check path
         run: pwd 
+      - name: move 
+        run: cd .. && pwd 
       - name: Upload JAR
         uses: actions/upload-artifact@v2
         with:
