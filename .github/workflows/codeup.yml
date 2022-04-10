@@ -10,6 +10,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK
@@ -17,7 +20,7 @@ jobs:
         with:
           java-version: '18'
       - name: Build with Maven
-        run: git pull origin test && cd codeup && mvn clean install
+        run: mvn clean install
       - name: Upload JAR
         uses: actions/upload-artifact@v2
         with:
