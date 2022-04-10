@@ -29,7 +29,7 @@ jobs:
           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
           
       - name: Launch jar file
-        run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+        run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
         
       - name: Deploy EC2
         uses: easingthemes/ssh-deploy@main
