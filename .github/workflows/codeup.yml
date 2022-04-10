@@ -19,6 +19,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '18'
+      - name: Pull the change from server
+        env:
+          USERNAME: ${{ secrets.GIT_USER }}
+          TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: | 
+          git pull origin halisia
+          echo $USERNAME
+          echo $TOKEN
           
       - name: Build with Maven
         run: cd codeup && mvn clean install
