@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   build:
-    name: Build
+    name: Build 
     runs-on: ubuntu-latest
 #     defaults:
 #       run:
@@ -25,19 +25,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: ./target/codeup-0.0.1-SNAPSHOT.jar   
-  deploy:
-    needs: build
-    name: Deploy to EC2 
-    runs-on: ubuntu-latest
-
-    steps:
-#       - name: Download JAR
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: artifact
-      - name: Checkout the files
-        uses: actions/checkout@v2
+          path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
+      - name: Launch jar file
+        run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+      - name: Check path
+        run: pwd && ls 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
@@ -45,3 +37,25 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
+
+#   deploy:
+#     needs: build
+#     name: Deploy to EC2 
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Download JAR
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: artifact
+#       - name: Checkout the files
+#         uses: actions/checkout@v2
+#       - name: Launch jar file
+# #         run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+#       - name: Deploy to Server 1
+#         uses: easingthemes/ssh-deploy@main
+#         env:
+#           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+#           REMOTE_HOST: ${{ secrets.HOST_DNS }}
+#           REMOTE_USER: ${{ secrets.USERNAME }}
+#           TARGET: ${{ secrets.TARGET_DIR }}
