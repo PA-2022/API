@@ -28,6 +28,8 @@ jobs:
           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
       - name: Launch jar file
         run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+      - name: Check path
+        run: pwd && ls 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
