@@ -27,7 +27,7 @@ jobs:
           host: ${{ secrets.GIT_API_HOST }}
           username: ${{ secrets.GIT_USER }}
           password: ${{ secrets.GIT_TOKEN }}
-          port: ${{ secrets.SSH_PORT }}
+          #port: ${{ secrets.SSH_PORT }}
           script: cd codeup && ${{ secrets.SCRIPT}}
           
       - name: Build with Maven
