@@ -38,7 +38,7 @@ jobs:
           
       - name: Launch jar file
 #         run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
-        run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar 2>&1 >> logfile.log &
+        run: nohup java -jar codeup/targetcodeup-0.0.1-SNAPSHOT.jar &
       - name: Deploy EC2
         uses: easingthemes/ssh-deploy@main
         env:
