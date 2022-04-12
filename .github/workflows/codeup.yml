@@ -19,14 +19,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '18'
-      - name: Pull the change from server
-        env:
-          USERNAME: ${{ secrets.GIT_USER }}
-          TOKEN: ${{ secrets.GIT_TOKEN }}
-        run: | 
-          git pull origin halisia
-          echo $USERNAME
-          echo $TOKEN
+#       - name: Pull the change from server
+#         env:
+#           USERNAME: ${{ secrets.GIT_USER }}
+#           TOKEN: ${{ secrets.GIT_TOKEN }}
+#         run: | 
+#           git pull origin halisia
+#           echo $USERNAME
+#           echo $TOKEN
           
       - name: Build with Maven
         run: cd codeup && mvn clean install
@@ -37,8 +37,8 @@ jobs:
           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
           
       - name: Launch jar file
-        run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
-        
+#         run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
+        run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar 2>&1 >> logfile.log &
       - name: Deploy EC2
         uses: easingthemes/ssh-deploy@main
         env:
