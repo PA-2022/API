@@ -16,7 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Connect to EC2 via SSH
-        run: mkdir -p ./.ssh && cd ./.ssh && touch rsa-key.pem && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && cat rsa-key.pem && ssh -T -i "rsa-key.pem" ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com 
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            ssh
+          host: ${{ secrets.HOST_DNS }}
+          user: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY}}
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
