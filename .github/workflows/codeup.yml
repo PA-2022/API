@@ -15,14 +15,14 @@ jobs:
 #         working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
-      - name: Connect to EC2 via SSH
-        uses: fifsky/ssh-action@master
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
         with:
-          command: |
-            ssh
-          host: ${{ secrets.HOST_DNS }}
-          user: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY}}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          name: rsa-key
+          known_hosts: ${{ secrets.HOST_DNS }}
+      - name: Run ssh command
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST_DNS }}
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
