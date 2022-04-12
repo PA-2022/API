@@ -15,10 +15,12 @@ jobs:
 #         working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '18'
+      - name: Connect to EC2
+        run: ssh -i ${{ secrets.EC2_SSH_KEY }} ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com
+#       - name: Set up JDK
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: '18'
 #       - name: Pull the change from server
 #         env:
 #           USERNAME: ${{ secrets.GIT_USER }}
@@ -28,17 +30,17 @@ jobs:
 #           echo $USERNAME
 #           echo $TOKEN
           
-      - name: Build with Maven
-        run: cd codeup && mvn clean install
+#       - name: Build with Maven
+#         run: cd codeup && mvn clean install
 #       - name: Upload JAR
 #         uses: actions/upload-artifact@v2
 #         with:
 #           name: artifact
 #           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
           
-      - name: Launch jar file
+#       - name: Launch jar file
 #         run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
-        run: nohup java -jar codeup/targetcodeup-0.0.1-SNAPSHOT.jar &
+#         run: nohup java -jar codeup/targetcodeup-0.0.1-SNAPSHOT.jar &
       - name: Deploy EC2
         uses: easingthemes/ssh-deploy@main
         env:
