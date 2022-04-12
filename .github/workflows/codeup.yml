@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Connect to EC2
-        run: ssh -i ${{ secrets.EC2_SSH_KEY }} ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com
+        run: ssh ${{ secrets.EC2_SSH_KEY }} ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
