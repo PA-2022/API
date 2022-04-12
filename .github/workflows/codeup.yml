@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Connect to EC2 via SSH
-        run: mkdir -p ./.ssh && cd ./.ssh && touch rsa-key.pem && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && ssh -i "rsa-key.pem" ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com
+        run: mkdir -p ./.ssh && cd ./.ssh && touch rsa-key.pem && echo "${{ secrets.EC2_SSH_KEY }}" > "rsa-key.pem" && ssh -i "rsa-key.pem" ec2-user@ec2-107-23-88-161.compute-1.amazonaws.com
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
