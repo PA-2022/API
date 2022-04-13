@@ -16,14 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install SSH key
-        run: mkdir .ssh 
-#         uses: shimataro/ssh-key-action@v2
-#         with:
-#           key: ${{ secrets.EC2_SSH_KEY }}
-#           name: rsa-key
-#           known_hosts: ${{ secrets.HOST_DNS }}
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.EC2_SSH_KEY }}
+          name: rsa-key
+          known_hosts: ${{ secrets.HOST_DNS }}
       - name: Run ssh command
-        run: cd .ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && ssh -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }}
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && sudo ssh -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }}
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
