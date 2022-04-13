@@ -15,12 +15,12 @@ jobs:
 #         working-directory: ./codeup
     steps:
       - uses: actions/checkout@v1
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.EC2_SSH_KEY }}
-          name: rsa-key
-          known_hosts: ${{ secrets.HOST_DNS }}
+#       - name: Install SSH key
+#         uses: shimataro/ssh-key-action@v2
+#         with:
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           name: rsa-key
+#           known_hosts: ${{ secrets.HOST_DNS }}
       - name: Run ssh command
         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && ssh -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }}
 #       - name: Set up JDK
