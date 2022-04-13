@@ -10,27 +10,52 @@ jobs:
   build:
     name: Build 
     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         working-directory: ./codeup
+
     steps:
       - uses: actions/checkout@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
         with:
-          java-version: '18'
-      - name: Build with Maven
-        run: cd codeup && mvn clean install
-      - name: Upload JAR
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifact
-          path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
-      - name: Launch jar file
-        run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
-      - name: Check path
-        run: pwd && ls 
-      - name: Deploy to Server 1
+          key: ${{ secrets.EC2_SSH_KEY }}
+          name: rsa-key
+          known_hosts: ${{ secrets.HOST_DNS }}
+          
+      - name: Create private key file
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
+          
+      - name: Connect to EC2 with SSH
+        run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
+        
+      - name: Connect to EC2 with SSH
+        run: sudo scp -i "/home/runner/.ssh/rsa-key.pem" README.md ec2-user@${{ secrets.HOST_DNS }}:.
+
+      - name: Run Script
+        run: ls
+#       - name: Set up JDK
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: '18'
+#       - name: Pull the change from server
+#         env:
+#           USERNAME: ${{ secrets.GIT_USER }}
+#           TOKEN: ${{ secrets.GIT_TOKEN }}
+#         run: | 
+#           git pull origin halisia
+#           echo $USERNAME
+#           echo $TOKEN
+          
+#       - name: Build with Maven
+#         run: cd codeup && mvn clean install
+#       - name: Upload JAR
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: artifact
+#           path: codeup/target/codeup-0.0.1-SNAPSHOT.jar
+          
+#       - name: Launch jar file
+#         run: cd codeup/target && nohup java -jar codeup-0.0.1-SNAPSHOT.jar &
+#         run: nohup java -jar codeup/targetcodeup-0.0.1-SNAPSHOT.jar &
+      - name: Deploy EC2
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -51,7 +76,7 @@ jobs:
 #       - name: Checkout the files
 #         uses: actions/checkout@v2
 #       - name: Launch jar file
-# #         run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
+#          run: cd codeup/target && java -jar codeup-0.0.1-SNAPSHOT.jar &
 #       - name: Deploy to Server 1
 #         uses: easingthemes/ssh-deploy@main
 #         env:
