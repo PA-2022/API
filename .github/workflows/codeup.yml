@@ -25,6 +25,9 @@ jobs:
           
       - name: Connect to EC2 with SSH
         run: sudo ssh -o StrictHostKeyChecking=no -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }} -l ec2-user & 
+        
+      - name: Run Script
+        run: ls
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
