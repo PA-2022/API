@@ -23,7 +23,7 @@ jobs:
           known_hosts: ${{ secrets.HOST_DNS }}
       - name: Run ssh command
         #run: ls /home/runner/.ssh/rsa-key
-        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && cat rsa-key.pem #ssh -tt -i "rsa-key" ${{ secrets.HOST_DNS }}
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && ssh -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }}
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
