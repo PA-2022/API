@@ -22,7 +22,7 @@ jobs:
           name: rsa-key
           known_hosts: ${{ secrets.HOST_DNS }}
       - name: Run ssh command
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.HOST_DNS }}
+        run: ssh://${{ secrets.EC2_SSH_KEY }}@${{ secrets.HOST_DNS }}
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
