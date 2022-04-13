@@ -28,7 +28,7 @@ jobs:
         
 
       - name: Run Script
-        run: ls 
+        run: ls -al
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
