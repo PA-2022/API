@@ -22,7 +22,7 @@ jobs:
           name: rsa-key
           known_hosts: ${{ secrets.HOST_DNS }}
       - name: Run ssh command
-        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem && sudo ssh -o StrictHostKeyChecking=no -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }} 
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem && sudo ssh -o StrictHostKeyChecking=no -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }} -l ec2-user & 
 #       - name: Set up JDK
 #         uses: actions/setup-java@v1
 #         with:
