@@ -25,7 +25,7 @@ jobs:
           
       - name: Connect to EC2 with SSH
 #         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} &
-        run: chmod +x script.sh && script.sh
+        run: chmod +x script.sh && ./script.sh
 #       - name: Run Script
 #         run: ls
 #       - name: Set up JDK
