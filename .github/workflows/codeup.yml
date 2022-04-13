@@ -24,7 +24,7 @@ jobs:
         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
           
       - name: Connect to EC2 with SSH
-        run: sudo ssh -o StrictHostKeyChecking=no -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }} -l ec2-user && ls
+        run: nohup sudo ssh -o StrictHostKeyChecking=no -tt -i "rsa-key.pem" ${{ secrets.HOST_DNS }} -l ec2-user 
         
       - name: Run Script
         run: ls
