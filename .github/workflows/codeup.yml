@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Script
        # run: nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'bash -s' < launch.sh & 
-        run: ls /home/runner
+        run: ls /home/runner/work
   deploy:
     needs: build
     name: Deploy 
