@@ -5,4 +5,4 @@ git pull origin halisia
 cd codeup
 mvn clean install
 cd target
-java -jar codeup-0.0.1-SNAPSHOT.jar & disown
+java -jar codeup-0.0.1-SNAPSHOT.jar
