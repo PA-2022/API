@@ -1,6 +1,6 @@
 #!/bin/bash
-cd PA
-cd API
+# cd PA
+# cd API
 git pull origin halisia
 cd codeup
 mvn clean install 
