@@ -33,7 +33,7 @@ jobs:
       - name: Connect to EC2 with SSH
         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
      
-      - name: Copy jar file in EC2
+      - name: Copy jar file in EC2 
         run: cd codeup/target && sudo scp -i "/home/runner/.ssh/rsa-key.pem" codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:~/.
 
       - name: Run remote jar file
