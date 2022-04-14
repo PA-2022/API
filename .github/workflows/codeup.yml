@@ -34,7 +34,7 @@ jobs:
         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
      
       - name: Copy jar file in EC2
-        run: sudo scp -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" codeup/target/codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:"/"
+        run: sudo scp -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" codeup/target/codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:'"/codeup-0.0.1-SNAPSHOT.jar"'
 
       - name: Run remote jar file
         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
