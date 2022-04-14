@@ -24,16 +24,17 @@ jobs:
         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
           
       - name: Run Script
-        run:  chmod 700 launch.sh && ./launch.sh 
+        run: ls
+#         run:  chmod 700 launch.sh && ./launch.sh 
       
-      - name: Connect to EC2 with SSH
-        run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
+#       - name: Connect to EC2 with SSH
+#         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
      
-      - name: Copy jar file in EC2
-        run: sudo scp -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" codeup/target/codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:/
+#       - name: Copy jar file in EC2
+#         run: sudo scp -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" codeup/target/codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:/
 
-      - name: Run remote jar file
-        run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
+#       - name: Run remote jar file
+#         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
 #       - name: Run Script
 #         run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'bash -s' < launch.sh &
  
