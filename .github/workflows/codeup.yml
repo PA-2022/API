@@ -29,6 +29,9 @@ jobs:
       - name: Run Script
         run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'bash -s' < launch.sh 
  
+      - name: Run jar
+        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'java -jar codeup/target/codeup-0.0.1-SNAPSHOT.jar' 
+ 
 
 #         run: ls /home/runner/work/API
   deploy:
