@@ -39,7 +39,7 @@ jobs:
 #       - name: Run remote jar file
 #         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
       - name: Run Script
-        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs' &
+        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs'
 #       - name: Deploy
 #         uses: easingthemes/ssh-deploy@main
 #         env:
