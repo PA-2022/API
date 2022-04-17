@@ -27,7 +27,7 @@ jobs:
       - name: Create private key file
         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
           
-#       - name: Run Script
+##       - name: Run Script
 #         run:  chmod 700 launch.sh && ./launch.sh 
       
 #       - name: Connect to EC2 with SSH
