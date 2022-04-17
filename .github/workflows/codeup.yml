@@ -1,4 +1,4 @@
-name: CodeUp Deployment
+name: CodeUp deployment
 on:
   push:
     branches:
