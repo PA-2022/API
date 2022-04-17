@@ -28,4 +28,4 @@ jobs:
 
       - name: Run Script
         run: |
-          ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs'
+          ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'nohup sh launch.sh &> logs'
