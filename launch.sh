@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+hostname
 cd PA
 cd API
 git pull origin halisia
