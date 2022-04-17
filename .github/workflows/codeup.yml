@@ -35,7 +35,6 @@ jobs:
      
       - name: Copy jar file in EC2 and launch
         run: sudo scp -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" launch.sh ec2-user@${{ secrets.HOST_DNS }}:~/
-
 #       - name: Run remote jar file
 #         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
       - name: Run Script
