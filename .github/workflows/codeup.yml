@@ -24,8 +24,8 @@ jobs:
 #         with:
 #           java-version: '18'
           
-#       - name: Create private key file
-#         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
+      - name: Create private key file
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
           
 #       - name: Run Script
 #         run:  chmod 700 launch.sh && ./launch.sh 
