@@ -2,7 +2,7 @@ name: CodeUp deployment
 on:
   push:
     branches:
-      - halisia
+      -'*' 
   pull_request:
     branches:
       - main
