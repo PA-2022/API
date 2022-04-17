@@ -1,4 +1,5 @@
 name: CodeUp deployment
+  
 on:
   push:
     branches:
@@ -27,4 +28,4 @@ jobs:
         run: sudo scp -o StrictHostKeyChecking=no -i "/home/runner/.ssh/rsa-key.pem" launch.sh ec2-user@${{ secrets.HOST_DNS }}:~/
 
       - name: Run Script
-        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs'
+        run: ssh -o StrictHostKeyChecking=no -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs'
