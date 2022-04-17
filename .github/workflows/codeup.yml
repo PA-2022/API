@@ -19,27 +19,27 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           name: rsa-key
           known_hosts: ${{ secrets.HOST_DNS }}
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '18'
+#       - name: Set up JDK
+#         uses: actions/setup-java@v1
+#         with:
+#           java-version: '18'
           
-      - name: Create private key file
-        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
+#       - name: Create private key file
+#         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
           
-      - name: Run Script
-        run:  chmod 700 launch.sh && ./launch.sh 
+#       - name: Run Script
+#         run:  chmod 700 launch.sh && ./launch.sh 
       
-      - name: Connect to EC2 with SSH
-        run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
+#       - name: Connect to EC2 with SSH
+#         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
      
-      - name: Copy jar file in EC2 and launch
-        run: cd codeup/target/ && sudo scp -i "/home/runner/.ssh/rsa-key.pem" codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:~/. && java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar &
+#       - name: Copy jar file in EC2 and launch
+#         run: cd codeup/target/ && sudo scp -i "/home/runner/.ssh/rsa-key.pem" codeup-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:~/. && java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar &
 
 #       - name: Run remote jar file
 #         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
-#       - name: Run Script
-#         run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'bash -s' < launch.sh &
+      - name: Run Script
+        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'bash -s' < launch.sh &
 #       - name: Deploy
 #         uses: easingthemes/ssh-deploy@main
 #         env:
