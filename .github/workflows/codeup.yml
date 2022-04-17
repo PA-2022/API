@@ -19,44 +19,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           name: rsa-key
           known_hosts: ${{ secrets.HOST_DNS }}
-#       - name: Set up JDK
-#         uses: actions/setup-java@v1
-#         with:
-#           java-version: '18'
           
       - name: Create private key file
         run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
-          
-#       - name: Run Script
-#         run:  chmod 700 launch.sh && ./launch.sh 
-      
-#       - name: Connect to EC2 with SSH
-#         run: sudo nohup ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} & 
-     
+
       - name: Copy jar file in EC2 and launch
         run: sudo scp -o StrictHostKeyChecking=no -i "/home/runner/.ssh/rsa-key.pem" launch.sh ec2-user@${{ secrets.HOST_DNS }}:~/
 
-#       - name: Run remote jar file
-#         run: java -Dspring.profiles.active=dev -jar codeup-0.0.1-SNAPSHOT.jar
       - name: Run Script
-        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'nohup sh launch.sh > logs'
-#       - name: Deploy
-#         uses: easingthemes/ssh-deploy@main
-#         env:
-#           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-#           REMOTE_HOST: ${{ secrets.HOST_DNS }}
-#           REMOTE_USER: ${{ secrets.USERNAME }}
-#           TARGET: ${{ secrets.TARGET_DIR }}
-#   deploy:
-#     needs: build
-#     name: Deploy 
-#     runs-on: ubuntu-latest
-
-#     steps:
-#      - name: Deploy to EC2
-#        uses: easingthemes/ssh-deploy@main
-#        env:
-#           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-#           REMOTE_HOST: ${{ secrets.HOST_DNS }}
-#           REMOTE_USER: ${{ secrets.USERNAME }}
-#           TARGET: ${{ secrets.TARGET_DIR }}
+        run: ssh -o StrictHostKeyChecking=no -tt -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs & disown'
