@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pa.codeup.codeup.services.CodeService;
 import pa.codeup.codeup.services.CustomUserDetailsService;
 
 @Configuration
@@ -23,6 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new CustomUserDetailsService();
+	}
+
+	@Bean
+	public CodeService codeService() {
+		return new CodeService();
 	}
 	
 	@Bean
