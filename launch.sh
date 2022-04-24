@@ -1,7 +1,8 @@
 #!/bin/bash
 cd PA
 cd API
-git pull origin halisia
+git checkout romain
+git pull origin romain
 cd codeup
 mvn clean install 
 cd target
