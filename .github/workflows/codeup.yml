@@ -1,0 +1,31 @@
+name: CodeUp deployment
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build 
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.EC2_SSH_KEY }}
+          name: rsa-key
+          known_hosts: ${{ secrets.HOST_DNS }}
+          
+      - name: Create private key file
+        run: cd /home/runner/.ssh/ && echo "${{ secrets.EC2_SSH_KEY }}" > rsa-key.pem && chmod 400 rsa-key.pem 
+
+      - name: Copy jar file in EC2 and launch
+        run: sudo scp -o StrictHostKeyChecking=no -i "/home/runner/.ssh/rsa-key.pem" launch.sh ec2-user@${{ secrets.HOST_DNS }}:~/
+
+      - name: Run Script
+        run: ssh -o StrictHostKeyChecking=no -i "/home/runner/.ssh/rsa-key.pem" ec2-user@${{ secrets.HOST_DNS }} 'sh launch.sh > logs'
