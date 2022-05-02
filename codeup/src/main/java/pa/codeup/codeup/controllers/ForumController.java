@@ -12,6 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("forums")
+@CrossOrigin
 public class ForumController {
     @Autowired
     private ForumRepository forumRepository;

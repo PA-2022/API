@@ -20,12 +20,18 @@ public class User {
 	
 	@Column(nullable = false, length = 64)
 	private String password;
-	
+
+	@Column(name = "username", nullable = false)
+	private String userName;
+
 	@Column(name = "firstname", nullable = false, length = 20)
 	private String firstName;
 	
 	@Column(name = "lastname", nullable = false, length = 20)
 	private String lastName;
+
+	@Column(name = "enabled")
+	private boolean enabled = true;
 
 	public Long getId() {
 		return id;
@@ -66,7 +72,12 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }
