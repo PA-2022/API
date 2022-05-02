@@ -19,7 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @EnableWebSecurity
@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.csrf().disable();
         http.cors().configurationSource(corsConfigurationSource());
-        http.authorizeRequests().antMatchers("/login").permitAll()
+        http.authorizeRequests().antMatchers("/login", "forums/**", "forums/all/**", "/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -53,7 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new CustomerAuthenticationFilter(authenticationManager(), objectMapper)) // filtre header not body
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .maximumSessions(1);
+                .maximumSessions(1)
+                ;
     }
 
     CorsConfigurationSource corsConfigurationSource() {
@@ -61,14 +62,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         configuration.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.PATCH.name(),
                 HttpMethod.POST.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.PATCH.name()
+                HttpMethod.DELETE.name()
         ));
-
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        List<String> origins = new ArrayList<>();
+        origins.add("http://localhost:4200");
+        configuration.setAllowedOrigins(origins);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
@@ -88,5 +88,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public JdbcUserDetailsManager jdbcUserDetailsManager(){
         return new JdbcUserDetailsManager(dataSource);
     }
+
 
 }

@@ -10,9 +10,9 @@ import pa.codeup.codeup.repositories.ForumRepository;
 
 import java.util.List;
 
+@CrossOrigin
 @Controller
 @RequestMapping("forums")
-@CrossOrigin
 public class ForumController {
     @Autowired
     private ForumRepository forumRepository;
