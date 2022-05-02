@@ -1,19 +1,23 @@
 package pa.codeup.codeup.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pa.codeup.codeup.entities.Comment;
 import pa.codeup.codeup.repositories.CommentRepository;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("comments")
 public class CommentController {
 
-    @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    public CommentController(CommentRepository commentRepository){
+        this.commentRepository = commentRepository;
+    }
 
     @GetMapping("/{id}")
     @ResponseBody

@@ -1,19 +1,18 @@
 package pa.codeup.codeup.security;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 public class UserCredentials {
-
-    private String email;
+    private String username;
     private String password;
 
-
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -25,6 +24,6 @@ public class UserCredentials {
     }
 
     public Authentication getAuthentication() {
-        return new UsernamePasswordAuthenticationToken(email, password);
+        return new UsernamePasswordAuthenticationToken(username, password);
     }
 }

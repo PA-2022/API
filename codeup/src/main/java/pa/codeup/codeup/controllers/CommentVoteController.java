@@ -1,14 +1,14 @@
 package pa.codeup.codeup.controllers;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pa.codeup.codeup.entities.Comment;
-import pa.codeup.codeup.entities.CommentVote;
 
-@Controller
+@RestController
 @RequestMapping("comment-votes")
 public class CommentVoteController {
 
-   //todo
+    @Autowired
+    public CommentVoteController(){
 
+    }
 }

@@ -1,43 +1,49 @@
 package pa.codeup.codeup.controllers;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pa.codeup.codeup.entities.AuthEntity;
 import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
-@Controller
-@CrossOrigin
+import java.util.List;
+
+@RestController
 @RequestMapping("users")
 public class UserController {
 
-	@Autowired
 	private UserRepository userRepo;
+	private AuthRepository authRepository;
 
-	@CrossOrigin
+	@Autowired
+	public UserController(UserRepository userRepo, AuthRepository authRepository){
+		this.userRepo = userRepo;
+		this.authRepository = authRepository;
+	}
+
+	@PostMapping("/test")
+	public String test(){
+		return "test";
+	}
+
 	@PostMapping("/register")
-	@ResponseBody
 	public User processRegister(@RequestBody User user) {
-		System.out.println(user.getEmail());
-		System.out.println(user.getFirstName());
-		System.out.println(user.getLastName());
-		System.out.println(user.getPassword());
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 
 		user.setPassword(encodedPassword);
 		
 		userRepo.save(user);
-		
+		this.authRepository.save(new AuthEntity(user.getUserName(), "ROLE_USER"));
+
+
 		return user;
 	}
 	
 	@GetMapping("/users")
-	@ResponseBody
 	public List<User> listUsers() {
 		return userRepo.findAll();
 	}
