@@ -19,16 +19,14 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/user-forum-relation")
 public class UserForumRelationController {
 
-    private AuthService authService;
-    private UserRepository userRepository;
-    private ForumRepository forumRepository;
-    private UserForumRelationRepository userForumRelationRepository;
+    private final AuthService authService;
+    private final ForumRepository forumRepository;
+    private final UserForumRelationRepository userForumRelationRepository;
 
     @Autowired
-    public UserForumRelationController(AuthService authService, UserRepository userRepository,
-                                       ForumRepository forumRepository, UserForumRelationRepository userForumRelationRepository) {
+    public UserForumRelationController(AuthService authService, ForumRepository forumRepository,
+                                       UserForumRelationRepository userForumRelationRepository) {
         this.authService = authService;
-        this.userRepository = userRepository;
         this.forumRepository = forumRepository;
         this.userForumRelationRepository = userForumRelationRepository;
     }
