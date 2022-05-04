@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class AuthEntity {
 
     @Id
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false,  columnDefinition = "Long")
     private String username;
 
     @Column(name = "authority")

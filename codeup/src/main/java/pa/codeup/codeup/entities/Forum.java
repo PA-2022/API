@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "forum")
-public class Forum {
+public class 	Forum {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

@@ -17,13 +17,13 @@ public class User {
 	private String password;
 
 	@Column(name = "username", nullable = false)
-	private String userName;
+	private String username;
 
 	@Column(name = "firstname", nullable = false, length = 20)
-	private String firstName;
+	private String firstname;
 	
 	@Column(name = "lastname", nullable = false, length = 20)
-	private String lastName;
+	private String lastname;
 
 	@Column(name = "enabled")
 	private boolean enabled = true;
@@ -52,27 +52,27 @@ public class User {
 		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstname(String firstName) {
+		this.firstname = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastname(String lastName) {
+		this.lastname = lastName;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

@@ -6,4 +6,5 @@ import pa.codeup.codeup.entities.AuthEntity;
 
 public interface AuthRepository extends JpaRepository<AuthEntity, Long> {
 
+    public AuthEntity getByUsername(String username);
 }
