@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ForumRepository extends JpaRepository<Forum, Long> {
 	public Forum getForumById(Long id);
-	public List<Forum> findBy(Pageable pageable);
+	public List<Forum> findByOrderByIdDesc(Pageable pageable);
 
 }

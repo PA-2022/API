@@ -13,6 +13,7 @@ import pa.codeup.codeup.entities.Forum;
 import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
+import pa.codeup.codeup.services.AuthService;
 
 import java.util.List;
 
@@ -24,11 +25,12 @@ public class UserController {
 
     private UserRepository userRepo;
     private AuthRepository authRepository;
-
+    private AuthService authService;
     @Autowired
-    public UserController(UserRepository userRepo, AuthRepository authRepository) {
+    public UserController(UserRepository userRepo, AuthRepository authRepository, AuthService authService) {
         this.userRepo = userRepo;
         this.authRepository = authRepository;
+        this.authService = authService;
     }
 
     @PostMapping("/register")
@@ -52,15 +54,7 @@ public class UserController {
 
     @GetMapping("/current")
     public User getLoggedUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        return this.userRepo.findByUsername(username);
+        return this.authService.getAuthUser();
     }
 
     @GetMapping("/{id}")

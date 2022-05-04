@@ -1,10 +1,13 @@
 package pa.codeup.codeup.entities;
 
+import pa.codeup.codeup.jpa.UserForumRelationCompositeKey;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "user_forum_relation ")
+@IdClass(UserForumRelationCompositeKey.class)
 public class UserForumRelation implements Serializable {
 
 	@Id

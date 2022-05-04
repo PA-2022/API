@@ -32,6 +32,6 @@ public class ForumController {
 
     @GetMapping("/all/limit/{limit}/offset/{offset}")
     public List<Forum> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
-        return forumRepository.findBy(PageRequest.of(offset, limit));
+        return forumRepository.findByOrderByIdDesc(PageRequest.of(offset, limit));
     }
 }
