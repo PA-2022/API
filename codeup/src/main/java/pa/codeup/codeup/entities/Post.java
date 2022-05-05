@@ -95,11 +95,11 @@ public class 	Post {
 		this.userId = userId;
 	}
 
-	public Long getForum_id() {
+	public Long getForumId() {
 		return forumId;
 	}
 
-	public void setForum_id(Long forumId) {
+	public void setForumId(Long forumId) {
 		this.forumId = forumId;
 	}
 }

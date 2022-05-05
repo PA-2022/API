@@ -26,7 +26,7 @@ public class PostController {
 
     @PostMapping("/add")
     public Post addPost(@RequestBody Post post){
-        System.out.println(post.getTitle());
+        System.out.println(post.getForumId());
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
