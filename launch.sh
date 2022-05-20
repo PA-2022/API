@@ -1,8 +1,8 @@
 #!/bin/bash
 cd PA
 cd API
-git checkout romain
-git pull origin romain
+git checkout test
+git pull origin test
 cd codeup
 mvn clean install 
 cd target
