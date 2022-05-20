@@ -1,12 +1,16 @@
 package pa.codeup.codeup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import pa.codeup.codeup.entities.Forum;
 import pa.codeup.codeup.entities.Post;
 import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.services.AuthService;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -31,7 +35,6 @@ public class PostController {
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
-
         post.setUserId(currentUser.getId());
         return this.postRepository.save(post);
     }
@@ -43,6 +46,12 @@ public class PostController {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find post");
         }
         return post;
+    }
+
+    @GetMapping("/all/limit/{limit}/offset/{offset}")
+    public List<Post> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
+        System.out.println(authService.getAuthUser());
+        return postRepository.findByOrderByIdDesc(PageRequest.of(offset, limit));
     }
 
 }
