@@ -1,8 +1,8 @@
 #!/bin/bash
 cd PA
 cd API
-git checkout test
-git pull origin test
+#git checkout test
+#git pull origin test
 cd codeup
 mvn clean install 
 cd target
