@@ -1,6 +1,7 @@
 #!/bin/bash
 cd PA
 cd API
+git branch
 git checkout test
 git pull origin test
 cd codeup
