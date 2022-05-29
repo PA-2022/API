@@ -1,9 +1,9 @@
 package pa.codeup.codeup.entities;
 
-import java.util.Collection;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -49,7 +49,7 @@ public class CustomUserDetails implements UserDetails {
 	}
 	
 	public String getFullName() {
-		return user.getFirstName() + " " + user.getLastName();
+		return user.getFirstname() + " " + user.getLastname();
 	}
 
 }

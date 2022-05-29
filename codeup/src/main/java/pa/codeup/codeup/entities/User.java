@@ -1,14 +1,9 @@
 package pa.codeup.codeup.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "userss")
+@Table(name = "users")
 public class User {
 	
 	@Id
@@ -20,12 +15,18 @@ public class User {
 	
 	@Column(nullable = false, length = 64)
 	private String password;
-	
+
+	@Column(name = "username", nullable = false)
+	private String username;
+
 	@Column(name = "firstname", nullable = false, length = 20)
-	private String firstName;
+	private String firstname;
 	
 	@Column(name = "lastname", nullable = false, length = 20)
-	private String lastName;
+	private String lastname;
+
+	@Column(name = "enabled")
+	private boolean enabled = true;
 
 	public Long getId() {
 		return id;
@@ -51,22 +52,27 @@ public class User {
 		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstname(String firstName) {
+		this.firstname = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastname(String lastName) {
+		this.lastname = lastName;
 	}
-	
-	
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }
