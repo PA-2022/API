@@ -22,7 +22,7 @@ public class 	Post {
 	@Column(name = "code", columnDefinition="TEXT")
 	private String code;
 
-	@Column(name = "user_id", nullable = false, columnDefinition="Long")
+	@Column(name = "user_id", nullable = false)
 	private Long userId;
 
 	@CreationTimestamp
@@ -36,7 +36,7 @@ public class 	Post {
 	private Date lastUpdateDate;
 
 
-	@Column(name = "forum_id" , nullable = false, columnDefinition="Long")
+	@Column(name = "forum_id" , nullable = false)
 	private Long forumId;
 
 	public Long getId() {
