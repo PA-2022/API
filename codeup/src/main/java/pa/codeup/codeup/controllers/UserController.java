@@ -77,8 +77,6 @@ public class UserController {
         toUpdate.setEmail(updatedUser.getEmail());
 
         toUpdate = this.userRepo.saveAndFlush(toUpdate);
-        System.out.println(toUpdate.getUsername());
-        System.out.println(authEntity.getUsername());
         this.authRepository.save(new AuthEntity(toUpdate.getUsername(), "ROLE_USER"));
         this.authRepository.delete(authEntity);
 
