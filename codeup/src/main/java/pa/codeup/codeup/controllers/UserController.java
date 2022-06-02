@@ -82,4 +82,11 @@ public class UserController {
 
         return toUpdate;
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "<p>Bonjour c'est le endpoint de test JEE (bon y'en as d'autres mais je donne que celui la)&nbsp;" +
+                "<br>" +
+                "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
+    }
 }
