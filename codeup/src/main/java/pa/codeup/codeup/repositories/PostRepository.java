@@ -4,8 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pa.codeup.codeup.entities.AuthEntity;
 import pa.codeup.codeup.entities.Post;
 
+import java.util.List;
+
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     public Post getPostById(Long id);
+
+    List<Post> getPostByForumId(Long forumId);
 }
