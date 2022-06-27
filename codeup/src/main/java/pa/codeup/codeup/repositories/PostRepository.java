@@ -4,12 +4,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pa.codeup.codeup.entities.AuthEntity;
 import pa.codeup.codeup.entities.Post;
 
+import java.util.List;
+
 import java.util.Collection;
 import java.util.List;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    List<Post> getPostByForumId(Long forumId);
     Post getPostById(Long id);
     void deletePostById(Long postId);
     List<Post> findAllByTitleLikeOrContentLike(String title, String content);
