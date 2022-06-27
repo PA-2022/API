@@ -86,21 +86,4 @@ public class PostController {
         throw new ResponseStatusException(OK, "Post deleted");
     }
 
-    @PutMapping()
-    @ResponseBody
-    public Long editComment(@RequestBody Post post) {
-        return postRepository.saveAndFlush(post).getId();
-    }
-
-    @DeleteMapping("/post/{postId}")
-    @ResponseBody
-    public boolean deletePostComment(@PathVariable Long postId){
-        Post post = this.postRepository.getPostById(postId);
-        if(post.getUserId().intValue() == this.authService.getAuthUser().getId().intValue()){
-            this.postRepository.deletePostById(postId);
-            return true;
-        }
-        throw new ResponseStatusException(UNAUTHORIZED, "User doesnt have the right to delete comment");
-    }
-
 }
