@@ -31,9 +31,9 @@ public class SearchService {
         List <UserForumRelation> userForumRelations = userForumRelationRepository.getAllByUserId(currentUser.getId());
         List<Long> forumsIds = userForumRelations.stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
 
-        List<User> users = userRepository.findAllByUsernameLike(searchString);
-        List<Post> randomPosts = postRepository.findAllByTitleLikeOrContentLike(searchString, searchString);
-        List<Post> subscribedPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdIn(searchString, searchString, forumsIds);
+        List<User> users = userRepository.findAllByUsernameLike(searchString).stream().limit(10).collect(Collectors.toList());
+        List<Post> randomPosts = postRepository.findAllByTitleLikeOrContentLike(searchString, searchString).stream().limit(10).collect(Collectors.toList());
+        List<Post> subscribedPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdIn(searchString, searchString, forumsIds).stream().limit(10).collect(Collectors.toList());
 
         return new SearchEntity(users, randomPosts, subscribedPosts);
     }

@@ -78,7 +78,7 @@ public class PostController {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
         if (!Objects.equals(currentUser.getId(), this.postRepository.getPostById(post.getId()).getUserId())) {
-            throw new ResponseStatusException(UNAUTHORIZED, "User cant edit this post");
+            throw new ResponseStatusException(UNAUTHORIZED, "User cant delete this post");
         }
 
         this.postRepository.deleteById(postId);
