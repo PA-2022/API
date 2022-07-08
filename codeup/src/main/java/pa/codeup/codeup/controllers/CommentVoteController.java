@@ -22,14 +22,14 @@ public class CommentVoteController {
         this.authService = authService;
     }
 
-    @GetMapping("/comment/{id}")
+    /*@GetMapping("/comment/{id}")
     public CommentVote getUserVoteForComment(@PathVariable Long id) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         return this.commentVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
-    }
+    }*/
 
     @PutMapping()
     public CommentVote putUserVoteForComment(@RequestBody CommentVote commentVote) {
