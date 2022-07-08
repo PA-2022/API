@@ -7,6 +7,7 @@ import pa.codeup.codeup.dto.PostVote;
 import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.PostVoteRepository;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.PostVoteService;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -14,11 +15,11 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("posts-vote")
 public class PostVoteController {
 
-    private PostVoteRepository postVoteRepository;
+    private PostVoteService postVoteService;
     private AuthService authService;
     @Autowired
-    public PostVoteController(PostVoteRepository postVoteRepository, AuthService authService){
-        this.postVoteRepository = postVoteRepository;
+    public PostVoteController(PostVoteService postVoteRepository, AuthService authService){
+        this.postVoteService = postVoteRepository;
         this.authService = authService;
     }
 
@@ -28,7 +29,7 @@ public class PostVoteController {
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        this.postVoteRepository.getPostVoteByPostIdAndUserId(id, currentUser.getId());
+        this.postVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
     }
 
     @PutMapping()
@@ -38,7 +39,7 @@ public class PostVoteController {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         postVote.setUserId(currentUser.getId());
-        return this.postVoteRepository.saveAndFlush(postVote);
+        return this.postVoteService.saveAndFlush(postVote);
     }
 
     @DeleteMapping
@@ -48,7 +49,7 @@ public class PostVoteController {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         postVote.setUserId(currentUser.getId());
-        this.postVoteRepository.delete(postVote);
+        this.postVoteService.delete(postVote);
         return true;
     }
 }
