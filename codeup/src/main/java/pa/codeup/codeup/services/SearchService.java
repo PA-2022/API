@@ -1,10 +1,10 @@
 package pa.codeup.codeup.services;
 
 import org.springframework.stereotype.Service;
-import pa.codeup.codeup.entities.Post;
+import pa.codeup.codeup.dto.Post;
 import pa.codeup.codeup.entities.SearchEntity;
-import pa.codeup.codeup.entities.User;
-import pa.codeup.codeup.entities.UserForumRelation;
+import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserForumRelation;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.repositories.UserForumRelationRepository;
 import pa.codeup.codeup.repositories.UserRepository;

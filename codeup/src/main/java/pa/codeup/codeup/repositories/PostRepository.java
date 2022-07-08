@@ -1,13 +1,11 @@
 package pa.codeup.codeup.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pa.codeup.codeup.entities.AuthEntity;
-import pa.codeup.codeup.entities.Post;
+import pa.codeup.codeup.dto.Post;
 
 import java.util.List;
 
 import java.util.Collection;
-import java.util.List;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {

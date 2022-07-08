@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pa.codeup.codeup.entities.CustomUserDetails;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.UserRepository;
 
 public class CustomUserDetailsService implements UserDetailsService {

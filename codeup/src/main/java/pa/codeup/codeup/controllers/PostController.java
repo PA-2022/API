@@ -3,8 +3,8 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.entities.Post;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.Post;
+import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.services.AuthService;
@@ -12,7 +12,6 @@ import pa.codeup.codeup.services.AuthService;
 import java.util.List;
 import java.util.Objects;
 
-import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController

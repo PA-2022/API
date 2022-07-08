@@ -1,4 +1,4 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import javax.persistence.*;
 import java.io.Serializable;

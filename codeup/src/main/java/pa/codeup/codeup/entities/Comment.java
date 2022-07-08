@@ -38,6 +38,9 @@ public class Comment {
     @Column(name = "last_update_date")
     private Date lastUpdateDate;
 
+    @Column(name = "note")
+    private int note;
+
     public Long getId() {
         return id;
     }
@@ -100,5 +103,13 @@ public class Comment {
 
     public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public int getNote() {
+        return note;
+    }
+
+    public void setNote(int note) {
+        this.note = note;
     }
 }

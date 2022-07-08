@@ -1,4 +1,4 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -38,6 +38,9 @@ public class 	Post {
 
 	@Column(name = "forum_id" , nullable = false)
 	private Long forumId;
+
+	@Column(name = "note")
+	private int note;
 
 	public Long getId() {
 		return id;
@@ -101,5 +104,13 @@ public class 	Post {
 
 	public void setForumId(Long forumId) {
 		this.forumId = forumId;
+	}
+
+	public int getNote() {
+		return note;
+	}
+
+	public void setNote(int note) {
+		this.note = note;
 	}
 }

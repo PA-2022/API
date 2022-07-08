@@ -3,33 +3,32 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.entities.CommentVote;
-import pa.codeup.codeup.entities.User;
-import pa.codeup.codeup.repositories.CommentVoteRepository;
+import pa.codeup.codeup.dto.CommentVote;
+import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.CommentVoteService;
 
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("comment-votes")
 public class CommentVoteController {
 
-    private CommentVoteRepository commentVoteRepository;
+    private CommentVoteService commentVoteService;
     private AuthService authService;
     @Autowired
-    public CommentVoteController(CommentVoteRepository commentVoteRepository, AuthService authService){
-        this.commentVoteRepository = commentVoteRepository;
+    public CommentVoteController(CommentVoteService commentVoteService, AuthService authService){
+        this.commentVoteService = commentVoteService;
         this.authService = authService;
     }
 
     @GetMapping("/comment/{id}")
-    public void getUserVoteForComment(@PathVariable Long id) {
+    public CommentVote getUserVoteForComment(@PathVariable Long id) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        this.commentVoteRepository.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
+        return this.commentVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
     }
 
     @PutMapping()
@@ -39,7 +38,7 @@ public class CommentVoteController {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         commentVote.setUserId(currentUser.getId());
-        return this.commentVoteRepository.saveAndFlush(commentVote);
+        return this.commentVoteService.saveAndFlush(commentVote);
     }
 
     @DeleteMapping
@@ -49,7 +48,7 @@ public class CommentVoteController {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         commentVote.setUserId(currentUser.getId());
-        this.commentVoteRepository.delete(commentVote);
+        this.commentVoteService.delete(commentVote);
         return true;
     }
 }

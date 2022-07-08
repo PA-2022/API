@@ -3,8 +3,8 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.entities.PostVote;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.PostVote;
+import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.PostVoteRepository;
 import pa.codeup.codeup.services.AuthService;
 

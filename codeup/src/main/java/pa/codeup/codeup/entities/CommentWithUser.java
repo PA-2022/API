@@ -1,5 +1,7 @@
 package pa.codeup.codeup.entities;
 
+import pa.codeup.codeup.dto.User;
+
 public class CommentWithUser {
     private Comment comment;
     private User user;

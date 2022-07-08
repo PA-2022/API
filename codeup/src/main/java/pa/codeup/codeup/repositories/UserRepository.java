@@ -2,7 +2,7 @@ package pa.codeup.codeup.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.User;
 
 import java.util.List;
 
