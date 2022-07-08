@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "post_votes")
+@Table(name = "friends")
 public class Friend  implements Serializable{
 	@Id
 	@Column(name = "user_id", nullable = false)

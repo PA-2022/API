@@ -7,6 +7,8 @@ import pa.codeup.codeup.dto.PostVote;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.repositories.PostVoteRepository;
 
+import java.util.Optional;
+
 @Service
 public class PostVoteService {
 
@@ -19,8 +21,8 @@ public class PostVoteService {
         this.postRepository = postRepository;
     }
 
-    public PostVote getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
-        return this.postVoteRepository.getPostVoteByPostIdAndUserId(postId, userId);
+    public Optional<PostVote> getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
+        return this.postVoteRepository.findPostVoteByPostIdAndUserId(postId, userId);
     }
 
     public PostVote saveAndFlush(PostVote postVote) {

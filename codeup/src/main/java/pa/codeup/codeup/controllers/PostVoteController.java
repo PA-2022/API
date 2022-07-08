@@ -8,6 +8,8 @@ import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.PostVoteService;
 
+import java.util.Optional;
+
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
@@ -23,12 +25,12 @@ public class PostVoteController {
     }
 
     @GetMapping("/post/{id}")
-    public void getUserVoteForPost(@PathVariable Long id) {
+    public Optional<PostVote> getUserVoteForPost(@PathVariable Long id) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        this.postVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
+        return this.postVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
     }
 
     @PutMapping()

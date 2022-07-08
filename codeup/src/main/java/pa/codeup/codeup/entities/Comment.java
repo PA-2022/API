@@ -39,7 +39,7 @@ public class Comment {
     private Date lastUpdateDate;
 
     @Column(name = "note")
-    private int note;
+    private int note = 0;
 
     public Long getId() {
         return id;
