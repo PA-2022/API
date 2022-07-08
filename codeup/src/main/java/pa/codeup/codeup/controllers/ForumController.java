@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/forums")
 public class ForumController {
 
-    private ForumRepository forumRepository;
+    private final ForumRepository forumRepository;
 
     @Autowired
     public ForumController(ForumRepository forumRepository) {

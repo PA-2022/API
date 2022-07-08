@@ -20,9 +20,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("comments")
 public class CommentController {
 
-    private CommentRepository commentRepository;
-    private AuthService authService;
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Autowired
     public CommentController(CommentRepository commentRepository, AuthService authService, UserRepository userRepository){

@@ -14,8 +14,8 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("comment-votes")
 public class CommentVoteController {
 
-    private CommentVoteService commentVoteService;
-    private AuthService authService;
+    private final CommentVoteService commentVoteService;
+    private final AuthService authService;
     @Autowired
     public CommentVoteController(CommentVoteService commentVoteService, AuthService authService){
         this.commentVoteService = commentVoteService;

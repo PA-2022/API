@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.PostVote;
 import pa.codeup.codeup.dto.User;
-import pa.codeup.codeup.repositories.PostVoteRepository;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.PostVoteService;
 
@@ -15,8 +14,8 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @RequestMapping("posts-vote")
 public class PostVoteController {
 
-    private PostVoteService postVoteService;
-    private AuthService authService;
+    private final PostVoteService postVoteService;
+    private final AuthService authService;
     @Autowired
     public PostVoteController(PostVoteService postVoteRepository, AuthService authService){
         this.postVoteService = postVoteRepository;

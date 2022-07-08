@@ -19,9 +19,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("users")
 public class UserController {
 
-    private UserRepository userRepo;
-    private AuthRepository authRepository;
-    private AuthService authService;
+    private final UserRepository userRepo;
+    private final AuthRepository authRepository;
+    private final AuthService authService;
     @Autowired
     public UserController(UserRepository userRepo, AuthRepository authRepository, AuthService authService) {
         this.userRepo = userRepo;

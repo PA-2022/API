@@ -11,7 +11,12 @@ import pa.codeup.codeup.services.SearchService;
 @RequestMapping("search")
 public class SearchController {
 
-    private SearchService searchService;
+    private final SearchService searchService;
+
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
+    }
+
     @GetMapping("/{searchString}")
     public SearchEntity performSearch(@PathVariable String searchString) {
         return searchService.performSeach(searchString);
