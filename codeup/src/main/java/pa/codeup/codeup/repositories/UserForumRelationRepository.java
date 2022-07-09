@@ -1,8 +1,7 @@
 package pa.codeup.codeup.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pa.codeup.codeup.entities.AuthEntity;
-import pa.codeup.codeup.entities.UserForumRelation;
+import pa.codeup.codeup.dto.UserForumRelation;
 
 import java.util.List;
 

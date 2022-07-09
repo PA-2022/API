@@ -4,7 +4,7 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.dto.Forum;
 import pa.codeup.codeup.repositories.ForumRepository;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/forums")
 public class ForumController {
 
-    private ForumRepository forumRepository;
+    private final ForumRepository forumRepository;
 
     @Autowired
     public ForumController(ForumRepository forumRepository) {

@@ -2,15 +2,11 @@ package pa.codeup.codeup.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.entities.AuthEntity;
-import pa.codeup.codeup.entities.Forum;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
@@ -23,9 +19,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("users")
 public class UserController {
 
-    private UserRepository userRepo;
-    private AuthRepository authRepository;
-    private AuthService authService;
+    private final UserRepository userRepo;
+    private final AuthRepository authRepository;
+    private final AuthService authService;
     @Autowired
     public UserController(UserRepository userRepo, AuthRepository authRepository, AuthService authService) {
         this.userRepo = userRepo;
@@ -77,11 +73,16 @@ public class UserController {
         toUpdate.setEmail(updatedUser.getEmail());
 
         toUpdate = this.userRepo.saveAndFlush(toUpdate);
-        System.out.println(toUpdate.getUsername());
-        System.out.println(authEntity.getUsername());
         this.authRepository.save(new AuthEntity(toUpdate.getUsername(), "ROLE_USER"));
         this.authRepository.delete(authEntity);
 
         return toUpdate;
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "<p>Bonjour c'est le endpoint de test JEE (bon y'en as d'autres mais je donne que celui la)&nbsp;" +
+                "<br>" +
+                "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
     }
 }

@@ -11,7 +11,7 @@ import javax.script.ScriptException;
 public class CodeController {
 
 
-    private CodeService codeService;
+    private final CodeService codeService;
 
     @Autowired
     public CodeController(CodeService codeService) {
