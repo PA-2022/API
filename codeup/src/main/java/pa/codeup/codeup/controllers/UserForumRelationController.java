@@ -3,12 +3,11 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.entities.Forum;
-import pa.codeup.codeup.entities.User;
-import pa.codeup.codeup.entities.UserForumRelation;
+import pa.codeup.codeup.dto.Forum;
+import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserForumRelation;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.UserForumRelationRepository;
-import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
 
 import java.util.List;

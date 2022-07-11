@@ -2,6 +2,7 @@ package pa.codeup.codeup.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pa.codeup.codeup.dto.User;
 
 import java.util.Collection;
 

@@ -1,10 +1,10 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "comment_votes")
-public class CommentVote {
+@Table(name = "post_votes")
+public class PostVote {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -15,8 +15,8 @@ public class CommentVote {
 	@Column(name = "user_id", nullable = false)
 	private Long userId;
 	
-	@Column(name = "comment_id", nullable = false)
-	private Long commentId;
+	@Column(name = "post_id", nullable = false)
+	private Long postId;
 
 	public Long getId() {
 		return id;
@@ -42,11 +42,11 @@ public class CommentVote {
 		this.userId = userId;
 	}
 
-	public Long getCommentId() {
-		return commentId;
+	public Long getPostId() {
+		return postId;
 	}
 
-	public void setCommentId(Long commentId) {
-		this.commentId = commentId;
+	public void setPostId(Long postId) {
+		this.postId = postId;
 	}
 }

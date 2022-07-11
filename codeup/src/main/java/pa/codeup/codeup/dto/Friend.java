@@ -1,10 +1,10 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "post_votes")
+@Table(name = "friends")
 public class Friend  implements Serializable{
 	@Id
 	@Column(name = "user_id", nullable = false)

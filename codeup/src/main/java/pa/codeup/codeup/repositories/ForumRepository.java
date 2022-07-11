@@ -2,7 +2,7 @@ package pa.codeup.codeup.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.dto.Forum;
 
 import java.util.List;
 

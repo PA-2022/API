@@ -1,4 +1,4 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
