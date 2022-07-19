@@ -14,6 +14,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -22,8 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @EnableWebSecurity
-@Order(1000)
 @Configuration
+@Order(2)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DataSource dataSource;
     private final ObjectMapper objectMapper;
