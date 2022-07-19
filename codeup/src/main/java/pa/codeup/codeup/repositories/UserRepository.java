@@ -1,11 +1,14 @@
 package pa.codeup.codeup.repositories;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.dto.User;
+
+import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-	@Query("SELECT u FROM User u WHERE u.email = ?1")
 	public User findByEmail(String email);
-	
+    public User findByUsername(String username);
+	public User getUserById(Long id);
+	public List<User> findAllByUsernameLike(String username);
 }
