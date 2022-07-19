@@ -24,7 +24,7 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        System.out.println("*****attemptAuth*****")
+        System.out.println("*****attemptAuth*****");
         try {
             UserCredentials userCredentials = objectMapper.readValue(request.getInputStream(), UserCredentials.class);
             return this.getAuthenticationManager().authenticate(userCredentials.getAuthentication());
