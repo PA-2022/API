@@ -20,9 +20,9 @@ import pa.codeup.codeup.services.CustomUserDetailsService;
 
 import java.util.Arrays;
 
+@Order(2)
 @Configuration
-//@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
