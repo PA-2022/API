@@ -8,7 +8,6 @@ import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.repositories.PostVoteRepository;
 
 import java.util.Optional;
-import java.util.List;
 
 @Service
 public class PostVoteService {
@@ -22,7 +21,7 @@ public class PostVoteService {
         this.postRepository = postRepository;
     }
 
-    public Optional<List<PostVote>> getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
+    public Optional<PostVote> getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
         return this.postVoteRepository.findPostVoteByPostIdAndUserId(postId, userId);
     }
 
