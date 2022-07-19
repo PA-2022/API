@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @EnableWebSecurity
+@Order(1000)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DataSource dataSource;
