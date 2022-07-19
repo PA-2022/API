@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pa.codeup.codeup.dto.PostVote;
 
 import java.util.Optional;
+import java.util.List;
 
 public interface PostVoteRepository extends JpaRepository<PostVote, Long> {
 	public Optional<List<PostVote>> findPostVoteByPostIdAndUserId(Long commentId, Long userId);

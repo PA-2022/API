@@ -8,6 +8,7 @@ import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.repositories.PostVoteRepository;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class PostVoteService {
