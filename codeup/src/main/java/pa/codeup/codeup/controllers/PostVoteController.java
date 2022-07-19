@@ -25,7 +25,7 @@ public class PostVoteController {
     }
 
     @GetMapping("/post/{id}")
-    public Optional<PostVote> getUserVoteForPost(@PathVariable Long id) {
+    public Optional<List<PostVote>> getUserVoteForPost(@PathVariable Long id) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");

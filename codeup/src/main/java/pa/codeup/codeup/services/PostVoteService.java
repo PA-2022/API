@@ -21,7 +21,7 @@ public class PostVoteService {
         this.postRepository = postRepository;
     }
 
-    public Optional<PostVote> getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
+    public Optional<List<PostVote>> getCommentVoteByCommentIdAndUserId(Long postId, Long userId) {
         return this.postVoteRepository.findPostVoteByPostIdAndUserId(postId, userId);
     }
 
