@@ -30,11 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public UserDetailsService userDetailsService() {
 		return new CustomUserDetailsService();
 	}
-/*
+
 	@Bean
 	public CodeService codeService() {
 		return new CodeService();
-	}*/
+	}
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
