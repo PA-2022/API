@@ -29,8 +29,8 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
             UserCredentials userCredentials = objectMapper.readValue(request.getInputStream(), UserCredentials.class);
             return this.getAuthenticationManager().authenticate(userCredentials.getAuthentication());
         } catch (IOException e) {
-            throw new BadCredentialsException("Wrong json supplied");
             System.out.println("*********WRONG JSON*******************");
+            throw new BadCredentialsException("Wrong json supplied");
             
         }
     }
