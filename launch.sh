@@ -1,7 +1,7 @@
 #!/bin/bash
 cd PA
 cd API
-git checkout main
+git checkout halisia_new
 git pull
 #TODO: uncomment the followings lines when java project is avalaible in this branch
 cd codeup
