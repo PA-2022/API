@@ -24,12 +24,14 @@ public class CustomerAuthenticationFilter extends UsernamePasswordAuthentication
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        System.out.println("*****attemptAuth*****")
         try {
             UserCredentials userCredentials = objectMapper.readValue(request.getInputStream(), UserCredentials.class);
-            System.out.println(userCredentials.getUsername() + " " + userCredentials.getPassword());
             return this.getAuthenticationManager().authenticate(userCredentials.getAuthentication());
         } catch (IOException e) {
             throw new BadCredentialsException("Wrong json supplied");
+            System.out.println("*********WRONG JSON*******************");
+            
         }
     }
 
