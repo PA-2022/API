@@ -21,12 +21,12 @@ public class User {
 
 	@Column(name = "firstname", nullable = false, length = 20)
 	private String firstname;
-	enabled
+	
 	@Column(name = "lastname", nullable = false, length = 20)
 	private String lastname;
 
 	@Column(name = "enabled")
-	private boolean  = true;
+	private boolean enabled = true;
 
 	public Long getId() {
 		return id;
