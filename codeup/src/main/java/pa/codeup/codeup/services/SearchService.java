@@ -33,12 +33,19 @@ public class SearchService {
 
     public SearchEntity performSeach(String searchString){
         User currentUser = authService.getAuthUser();
-        List <UserForumRelation> userForumRelations = userForumRelationRepository.getAllByUserId(currentUser.getId());
-        List<Long> forumsIds = userForumRelations.stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
-        System.out.println(forumsIds.toString());
+
         List<User> users = userRepository.findAllByUsernameLike("%"+searchString+"%").stream().limit(10).collect(Collectors.toList());
-        List<Post> randomPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdNotIn("%"+searchString+"%", "%"+searchString+"%", forumsIds).stream().limit(10).collect(Collectors.toList());
-        List<Post> subscribedPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdIn("%"+searchString+"%", "%"+searchString+"%", forumsIds).stream().limit(10).collect(Collectors.toList());
+        List<Post> randomPosts = new ArrayList<>();
+        List<Post> subscribedPosts = new ArrayList<>();
+        if(currentUser != null){
+            List <UserForumRelation> userForumRelations = userForumRelationRepository.getAllByUserId(currentUser.getId());
+            List<Long> forumsIds = userForumRelations.stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
+            randomPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdNotIn("%"+searchString+"%", "%"+searchString+"%", forumsIds).stream().limit(10).collect(Collectors.toList());
+            subscribedPosts = postRepository.findAllByTitleLikeOrContentLikeAndForumIdIn("%"+searchString+"%", "%"+searchString+"%", forumsIds).stream().limit(10).collect(Collectors.toList());
+        }
+        else {
+            randomPosts = postRepository.findAllByTitleLikeOrContentLike("%"+searchString+"%", "%"+searchString+"%").stream().limit(10).collect(Collectors.toList());
+        }
         List<PostWithUserAndForum> randomPostsWithUserAndForum = new ArrayList<>();
         for (Post post: randomPosts) {
             String username = this.userRepository.getUserById(post.getUserId()).getUsername();
