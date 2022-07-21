@@ -3,11 +3,17 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import pa.codeup.codeup.dto.ContentPost;
 import pa.codeup.codeup.dto.Post;
+import pa.codeup.codeup.dto.PostContent;
 import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.repositories.ContentPostRepository;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.CodeService;
+import pa.codeup.codeup.services.PostService;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,23 +27,27 @@ public class PostController {
     private final PostRepository postRepository;
     private final ForumRepository forumRepository;
     private final AuthService authService;
+    private final PostService postService;
+    private final ContentPostRepository contentPostRepository;
 
     @Autowired
-    public PostController(PostRepository postRepository, ForumRepository forumRepository, AuthService authService){
+    public PostController(PostRepository postRepository, ForumRepository forumRepository, AuthService authService, PostService postService, ContentPostRepository contentPostRepository) {
         this.postRepository = postRepository;
         this.forumRepository = forumRepository;
         this.authService = authService;
+        this.postService = postService;
+        this.contentPostRepository = contentPostRepository;
     }
 
     @PostMapping("/add")
-    public Post addPost(@RequestBody Post post){
+    public Post addPost(@RequestBody PostContent postContent) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
 
-        post.setUserId(currentUser.getId());
-        return this.postRepository.save(post);
+        postContent.getPost().setUserId(currentUser.getId());
+        return this.postService.addContentAndPost(postContent.getPost(), postContent.getContentPost());
     }
 
     @GetMapping("/{postId}")
@@ -47,6 +57,16 @@ public class PostController {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find post");
         }
         return post;
+    }
+
+    @GetMapping("/{postId}/content")
+    public List<ContentPost> getContentById(@PathVariable Long postId){
+        
+        List<ContentPost> contentPosts = this.contentPostRepository.findAllByPostId(postId);
+        if(contentPosts == null) {
+            throw new ResponseStatusException(NO_CONTENT, "Unable to find post");
+        }
+        return contentPosts;
     }
 
     @GetMapping("/forum/{forumId}")
