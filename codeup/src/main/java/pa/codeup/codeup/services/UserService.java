@@ -71,7 +71,7 @@ public class UserService {
                 "<tr>\n" +
                 "<td style=\"padding: 0 35px;\">\n" +
                 "<h1 style=\"color: #1e1e2d; font-weight: 500; margin: 0; font-size: 32px; font-family: 'Rubik',sans-serif;\">You have requested to reset your password</h1>\n" +
-                "<p style=\"color: #455056; font-size: 15px; line-height: 24px; margin: 0;\">We cannot simply send you your old password. A unique link to reset your password has been generated for you. To reset your password, click the following link and follow the instructions.</p>\n" +
+                "<p style=\"color: #455056; font-size: 15px; line-height: 24px; margin: 0;\">A unique link to reset your password has been generated for you. To reset your password, click the following link and follow the instructions.</p>\n" +
                 "<a href=\"" + frontUrl + "\" style=\"background: #20e277; text-decoration: none !important; font-weight: 500; margin-top: 35px; color: #fff; text-transform: uppercase; font-size: 14px; padding: 10px 24px; display: inline-block; border-radius: 50px;\">Reset Password</a></td>\n" +
                 "</tr>\n" +
                 "<tr>\n" +
