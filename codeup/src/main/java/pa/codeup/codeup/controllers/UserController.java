@@ -3,8 +3,12 @@ package pa.codeup.codeup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.entities.AuthEntity;
 import pa.codeup.codeup.dto.User;
@@ -13,6 +17,8 @@ import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.UserService;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -128,5 +134,19 @@ public class UserController {
     @PostMapping("/lost-password/{email}")
     public boolean userLostPassword(@PathVariable String email) {
         return this.userService.emailUserLostPassword(email);
+    }
+
+    @PostMapping("/profile-picture")
+    public ResponseEntity<String> uploadUserImage(MultipartHttpServletRequest request) throws IOException {
+        User user = this.authService.getAuthUser();
+        Iterator<String> itr = request.getFileNames();
+        MultipartFile file = request.getFile(itr.next());
+        if(file != null) {
+            String link = this.userService.uploadImage(file, user);
+            System.out.println("S3 image link after upload : " + link);
+            return new ResponseEntity<>(link, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("false", HttpStatus.OK);
+
     }
 }

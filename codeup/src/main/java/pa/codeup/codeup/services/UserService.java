@@ -3,13 +3,28 @@ package pa.codeup.codeup.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import pa.codeup.codeup.dto.Images;
 import pa.codeup.codeup.dto.Token;
 import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.repositories.ImageRepository;
 import pa.codeup.codeup.repositories.TokenRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
+import java.io.*;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Objects;
+
+import java.io.FileOutputStream;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 
 
 @Service
@@ -18,12 +33,18 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
+
+    private static final String REGION = "eu-west-1";
+    private static final String BUCKET_NAME = "my-awesome-compartment";
+    private static final String DESTINATION_FOLDER = "dossier";
 
     @Autowired
-    public UserService(TokenRepository tokenRepository, MailjetEmailService mailjetEmailService, UserRepository userRepository) {
+    public UserService(TokenRepository tokenRepository, MailjetEmailService mailjetEmailService, UserRepository userRepository, ImageRepository imageRepository) {
         this.tokenRepository = tokenRepository;
         this.emailService = mailjetEmailService;
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
     private String passwordChangeTokenCreation(String username, Long userId){
@@ -106,5 +127,55 @@ public class UserService {
             return false;
         }
         return sendPasswordChangeEmail(user);
+    }
+
+    public int findByFileName(String filename) {
+        int count = this.imageRepository.countAllByImageNameLike("%" + filename.substring(0, filename.lastIndexOf('.')) + "%");
+        System.out.println(count);
+        return count;
+    }
+
+    public String uploadImage(MultipartFile multipartFile, User user) throws IOException {
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        FileOutputStream fos = new FileOutputStream( file );
+        fos.write( multipartFile.getBytes() );
+        fos.close();
+
+        int filenameCount = this.findByFileName(file.getName());
+
+        String filename = file.getName();
+        if(filenameCount > 0 ){
+            String[] filenameAndExtension = file.getName().split("\\.");
+            filename = (filenameAndExtension[0] + '_' + filenameCount + "." + filenameAndExtension[1]);
+        }
+
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(
+                "AKIAS376PSEQ6ZL26KFP",
+                "zP6tc7Rsj1PffKK+HkLhO+4qB7hKN3J+H/uudmik");
+
+        ClientConfiguration clientConfig = new ClientConfiguration();
+        clientConfig.setSignerOverride("AWSS3V4SignerType");
+
+        AmazonS3 s3Client =  AmazonS3ClientBuilder
+                .standard()
+                .withRegion(REGION)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withClientConfiguration(clientConfig)
+                .build();
+
+        String destinationPath = DESTINATION_FOLDER +'/'+ filename;
+
+        PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, destinationPath, file);
+
+
+        s3Client.putObject(putObjectRequest);
+        String url = ((AmazonS3Client) s3Client).getResourceUrl(BUCKET_NAME, DESTINATION_FOLDER + '/' + filename);
+
+        user.setProfilePictureUrl(url);
+        user.setProfilePictureName(filename);
+        this.imageRepository.save(new Images(null, url, filename));
+
+        this.userRepository.saveAndFlush(user);
+        return url;
     }
 }

@@ -28,6 +28,36 @@ public class User {
 	@Column(name = "enabled")
 	private boolean enabled = true;
 
+	@Column(name = "profile_picture_url")
+	private String profilePictureUrl;
+
+	@Column(name = "profile_picture_name")
+	private String profilePictureName;
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+	public void setProfilePictureName(String profilePictureName) {
+		this.profilePictureName = profilePictureName;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
+
 	public Long getId() {
 		return id;
 	}
