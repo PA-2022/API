@@ -16,7 +16,7 @@ public class 	Post {
 	@Column(name = "title", nullable = false, columnDefinition="TEXT")
 	private String title;
 
-	@Column(name = "content", nullable = false, columnDefinition="TEXT")
+	@Column(name = "content", columnDefinition="TEXT")
 	private String content;
 
 	@Column(name = "code", columnDefinition="TEXT")
@@ -112,5 +112,19 @@ public class 	Post {
 
 	public void setNote(int note) {
 		this.note = note;
+	}
+
+	public String toString() {
+		return "Post{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", content='" + content + '\'' +
+				", code='" + code + '\'' +
+				", userId=" + userId +
+				", creationDate=" + creationDate +
+				", lastUpdateDate=" + lastUpdateDate +
+				", forumId=" + forumId +
+				", note=" + note +
+				'}';
 	}
 }
