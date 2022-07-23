@@ -2,6 +2,7 @@ package pa.codeup.codeup.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,6 +14,7 @@ import pa.codeup.codeup.services.AuthService;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -31,6 +33,11 @@ public class UserController {
 
     @PostMapping("/register")
     public User processRegister(@RequestBody User user) {
+        if(this.userRepo.findAllByUsernameLike(user.getUsername()).size() > 0 &&
+                this.userRepo.findAllByEmailLike(user.getEmail()).size() > 0) {
+            throw new ResponseStatusException(NOT_ACCEPTABLE, "User exists");
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
@@ -84,5 +91,14 @@ public class UserController {
         return "<p>Bonjour c'est le endpoint de test JEE (bon y'en as d'autres mais je donne que celui la)&nbsp;" +
                 "<br>" +
                 "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
+    }
+
+    @GetMapping("/username-exists/{username}")
+    public boolean usernameExists(@PathVariable String username) {
+        return this.userRepo.findAllByUsernameLike(username).size() > 0;
+    }
+    @GetMapping("/email-exists/{email}")
+    public boolean emailExists(@PathVariable String email) {
+        return this.userRepo.findAllByEmailLike(email).size() > 0;
     }
 }
