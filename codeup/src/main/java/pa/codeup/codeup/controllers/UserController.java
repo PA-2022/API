@@ -11,11 +11,11 @@ import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.UserService;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("users")
@@ -24,11 +24,13 @@ public class UserController {
     private final UserRepository userRepo;
     private final AuthRepository authRepository;
     private final AuthService authService;
+    private final UserService userService;
     @Autowired
-    public UserController(UserRepository userRepo, AuthRepository authRepository, AuthService authService) {
+    public UserController(UserRepository userRepo, AuthRepository authRepository, AuthService authService, UserService userService) {
         this.userRepo = userRepo;
         this.authRepository = authRepository;
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PostMapping("/register")
@@ -100,5 +102,31 @@ public class UserController {
     @GetMapping("/email-exists/{email}")
     public boolean emailExists(@PathVariable String email) {
         return this.userRepo.findAllByEmailLike(email).size() > 0;
+    }
+    @PostMapping("/send-password-edit")
+    public boolean sendPasswordEditMail() {
+        User user = this.authService.getAuthUser();
+        if(user == null) {
+            throw new ResponseStatusException(UNAUTHORIZED, "User not logged in");
+        }
+        return this.userService.sendPasswordChangeEmail(user);
+    }
+    @PostMapping("/change-password/{password}/token/{token}")
+    public boolean changePassword(@PathVariable String password, @PathVariable String token) {
+        boolean isOK = this.userService.changePassword(password, token);
+        if(!isOK) {
+            throw new ResponseStatusException(UNAUTHORIZED, "bad token");
+        }
+        return true;
+    }
+
+    @GetMapping("/token/{token}")
+    public boolean isTokenActive(@PathVariable String token) {
+        return this.userService.isTokenActive(token);
+    }
+
+    @PostMapping("/lost-password/{email}")
+    public boolean userLostPassword(@PathVariable String email) {
+        return this.userService.emailUserLostPassword(email);
     }
 }
