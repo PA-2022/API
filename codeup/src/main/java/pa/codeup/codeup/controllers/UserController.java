@@ -14,6 +14,7 @@ import pa.codeup.codeup.services.AuthService;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -32,6 +33,11 @@ public class UserController {
 
     @PostMapping("/register")
     public User processRegister(@RequestBody User user) {
+        if(this.userRepo.findAllByUsernameLike(user.getUsername()).size() > 0 &&
+                this.userRepo.findAllByEmailLike(user.getEmail()).size() > 0) {
+            throw new ResponseStatusException(NOT_ACCEPTABLE, "User exists");
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
