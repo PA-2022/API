@@ -8,6 +8,8 @@ import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.CommentVoteService;
 
+import java.util.Optional;
+
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
@@ -22,14 +24,14 @@ public class CommentVoteController {
         this.authService = authService;
     }
 
-    /*@GetMapping("/comment/{id}")
-    public CommentVote getUserVoteForComment(@PathVariable Long id) {
+    @GetMapping("/comment/{id}")
+    public Optional<CommentVote> getUserVoteForComment(@PathVariable Long id) {
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         return this.commentVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
-    }*/
+    }
 
     @PutMapping()
     public CommentVote putUserVoteForComment(@RequestBody CommentVote commentVote) {
