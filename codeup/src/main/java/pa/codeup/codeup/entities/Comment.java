@@ -112,4 +112,5 @@ public class Comment {
     public void setNote(int note) {
         this.note = note;
     }
+
 }

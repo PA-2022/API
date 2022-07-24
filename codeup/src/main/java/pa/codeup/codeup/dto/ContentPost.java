@@ -16,6 +16,9 @@ public class ContentPost {
     @Column(name ="post_id")
     private Long postId;
 
+    @Column(name ="comment_id")
+    private Long commentId;
+
     @Column(name = "type")
     private int type;
     
@@ -61,6 +64,14 @@ public class ContentPost {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Long getCommentId() {
+        return this.commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
     
     public String toString() {
