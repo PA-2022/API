@@ -130,9 +130,7 @@ public class UserService {
     }
 
     public int findByFileName(String filename) {
-        int count = this.imageRepository.countAllByImageNameLike("%" + filename.substring(0, filename.lastIndexOf('.')) + "%");
-        System.out.println(count);
-        return count;
+        return this.imageRepository.countAllByImageNameLike("%" + filename.substring(0, filename.lastIndexOf('.')) + "%");
     }
 
     public String uploadImage(MultipartFile multipartFile, User user) throws IOException {

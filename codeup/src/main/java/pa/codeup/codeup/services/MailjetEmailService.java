@@ -29,7 +29,6 @@ public class MailjetEmailService implements EmailService {
 
     public boolean sendEmail(String recipient, String recipientEmail, String subject, String content) {
         try {
-            System.out.println(recipient  + "   " + recipientEmail);
             TransactionalEmail message1 = TransactionalEmail
                     .builder()
                     .to(new SendContact(recipientEmail, recipient))
@@ -50,7 +49,6 @@ public class MailjetEmailService implements EmailService {
             SendEmailsResponse response = request.sendWith(client);
             return true;
         } catch (Exception e) {
-            System.out.println(e.toString());
             return false;
         }
     }

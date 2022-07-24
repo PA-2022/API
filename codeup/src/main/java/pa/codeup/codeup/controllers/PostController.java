@@ -1,6 +1,8 @@
 package pa.codeup.codeup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -8,6 +10,7 @@ import pa.codeup.codeup.dto.ContentPost;
 import pa.codeup.codeup.dto.Post;
 import pa.codeup.codeup.dto.PostContent;
 import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.entities.PostWithUserAndForum;
 import pa.codeup.codeup.repositories.ContentPostRepository;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.PostRepository;
@@ -75,6 +78,32 @@ public class PostController {
             throw new ResponseStatusException(NOT_FOUND, "Forum not found");
         }
         return this.postRepository.getPostByForumId(forumId);
+    }
+
+    @GetMapping("post-list/forum/{forumId}/category/{category}/offset/{offset}/limit/{limit}")
+    public ResponseEntity<List<PostWithUserAndForum>> getListPostByForum(@PathVariable Long forumId, @PathVariable String category, @PathVariable int offset, @PathVariable int limit){
+        try {
+            if(offset == 0 || limit == 0) {
+                limit = 10;
+            }
+            offset = offset/limit;
+            return new ResponseEntity<>(this.postService.getPostWithUserAndForumList(forumId, category, offset, limit), HttpStatus.OK);
+        } catch(Exception e) {
+            throw new ResponseStatusException(NOT_FOUND, "Forum not found");
+        }
+    }
+
+    @GetMapping("post-list/offset/{offset}/limit/{limit}")
+    public ResponseEntity<List<PostWithUserAndForum>> getListPost(@PathVariable int offset, @PathVariable int limit){
+        try {
+            if(limit == 0) {
+                offset = 0;
+                limit = 10;
+            }
+            return new ResponseEntity<>(this.postService.getPostWithUserAndForumList(null, null, offset, limit), HttpStatus.OK);
+        } catch(Exception e) {
+            throw new ResponseStatusException(NOT_FOUND, "Forum not found");
+        }
     }
 
     @PutMapping()

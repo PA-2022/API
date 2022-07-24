@@ -142,7 +142,6 @@ public class UserController {
         MultipartFile file = request.getFile(itr.next());
         if(file != null) {
             String link = this.userService.uploadImage(file, user);
-            System.out.println("S3 image link after upload : " + link);
             return new ResponseEntity<>(link, HttpStatus.OK);
         }
         return new ResponseEntity<>("false", HttpStatus.OK);

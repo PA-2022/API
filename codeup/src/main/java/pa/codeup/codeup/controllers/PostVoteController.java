@@ -30,7 +30,7 @@ public class PostVoteController {
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        return this.postVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
+        return this.postVoteService.getPostVoteByPostIdAndUserId(id, currentUser.getId());
     }
 
     @PutMapping()
@@ -40,7 +40,12 @@ public class PostVoteController {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         postVote.setUserId(currentUser.getId());
-        return this.postVoteService.saveAndFlush(postVote);
+        PostVote exists = this.postVoteService.getPostVoteByPostIdAndUserId(postVote.getPostId(), currentUser.getId()).orElse(null);
+        if(exists == null) {
+            return this.postVoteService.saveAndFlush(postVote);
+        }
+        exists.setUpvote(postVote.isUpvote());
+        return this.postVoteService.saveAndFlush(exists);
     }
 
     @DeleteMapping
