@@ -37,7 +37,7 @@ public class Friend {
         this.userId = userId;
     }
 
-    public Long isFriendId() {
+    public Long getFriendId() {
         return friendId;
     }
 

@@ -5,15 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.w3c.dom.stylesheets.LinkStyle;
 import pa.codeup.codeup.dto.ResponseOutputDAO;
 import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.entities.ExternalCode;
 import pa.codeup.codeup.entities.Friend;
+import pa.codeup.codeup.entities.UserAndFriend;
+import pa.codeup.codeup.entities.UserIsFriend;
+import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.CodeService;
 import pa.codeup.codeup.services.FriendService;
 
 import javax.script.ScriptException;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -73,6 +79,28 @@ public class FriendController {
         try {
             this.friendService.deleteFriend(user.getId(), friendId);
             return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(NOT_ACCEPTABLE, "Error with request");
+        }
+    }
+
+    @GetMapping("is-friend/{friendId}")
+    public ResponseEntity<Friend> getIsFriend(@PathVariable Long friendId){
+        User user = this.authService.getAuthUser();
+        if(user == null) {
+            throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
+        }
+        try {
+            return new ResponseEntity<>( this.friendService.getFriend(user, friendId), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(NOT_ACCEPTABLE, "Error with request");
+        }
+    }
+
+    @GetMapping("list/{userId}")
+    public ResponseEntity<List<UserAndFriend>> getFriendList(@PathVariable Long userId) {
+        try {
+            return new ResponseEntity<>( this.friendService.getList(userId), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "Error with request");
         }

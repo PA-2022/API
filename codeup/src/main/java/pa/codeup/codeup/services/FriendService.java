@@ -5,9 +5,13 @@ import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.FriendDto;
 import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.entities.Friend;
+import pa.codeup.codeup.entities.UserAndFriend;
+import pa.codeup.codeup.entities.UserIsFriend;
 import pa.codeup.codeup.repositories.FriendRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -73,5 +77,21 @@ public class FriendService {
             return null;
         }
         return Objects.requireNonNullElse(existsFriendA, existsFriendB).toEntity();
+    }
+
+    public List<UserAndFriend> getList(Long userId) throws Exception {
+        User currentUser = this.userRepository.getUserById(userId);
+        if(currentUser == null) {
+            throw new Exception("User doesnt exists");
+        }
+        List<UserAndFriend> userAreFriends = new ArrayList<>();
+        List<FriendDto> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
+        for (FriendDto friendDto: friendsDtos) {
+            Friend friend = friendDto.toEntity();
+            Long friendId = Objects.equals(friend.getUserId(), currentUser.getId()) ? friend.getFriendId() : friend.getUserId();
+            User friendUser = this.userRepository.getUserById(friendId);
+            userAreFriends.add(new UserAndFriend(friendUser, friend));
+        }
+        return userAreFriends;
     }
 }
