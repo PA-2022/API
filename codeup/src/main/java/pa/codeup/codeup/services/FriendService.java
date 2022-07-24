@@ -1,5 +1,6 @@
 package pa.codeup.codeup.services;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.FriendDto;
@@ -93,5 +94,20 @@ public class FriendService {
             userAreFriends.add(new UserAndFriend(friendUser, friend));
         }
         return userAreFriends;
+    }
+
+    public List<Long> getUserFriends(Long userId) throws Exception {
+        User currentUser = this.userRepository.getUserById(userId);
+        if(currentUser == null) {
+            throw new Exception("User doesnt exists");
+        }
+        List<Long> usersIds = new ArrayList<>();
+        List<FriendDto> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
+        for (FriendDto friendDto: friendsDtos) {
+            Friend friend = friendDto.toEntity();
+            Long friendId = Objects.equals(friend.getUserId(), userId) ? friend.getFriendId() : friend.getUserId();
+            usersIds.add(friendId);
+        }
+        return usersIds;
     }
 }

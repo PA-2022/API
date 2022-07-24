@@ -93,14 +93,14 @@ public class PostController {
         }
     }
 
-    @GetMapping("post-list/offset/{offset}/limit/{limit}")
-    public ResponseEntity<List<PostWithUserAndForum>> getListPost(@PathVariable int offset, @PathVariable int limit){
+    @GetMapping("post-list/category/{category}/offset/{offset}/limit/{limit}")
+    public ResponseEntity<List<PostWithUserAndForum>> getListPost(@PathVariable String category, @PathVariable int offset, @PathVariable int limit){
         try {
             if(limit == 0) {
-                offset = 0;
                 limit = 10;
             }
-            return new ResponseEntity<>(this.postService.getPostWithUserAndForumList(null, null, offset, limit), HttpStatus.OK);
+            offset = offset/limit;
+            return new ResponseEntity<>(this.postService.getPostWithUserAndForumList(null, category , offset, limit), HttpStatus.OK);
         } catch(Exception e) {
             throw new ResponseStatusException(NOT_FOUND, "Forum not found");
         }

@@ -10,6 +10,7 @@ import pa.codeup.codeup.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -20,19 +21,23 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostVoteRepository postVoteRepository;
     private final AuthService authService;
+    private final FriendService friendService;
+    private final UserForumRelationRepository userForumRelationRepository;
 
     @Autowired
-    public PostService(ContentPostRepository contentPostRepository, PostRepository postRepository, ForumRepository forumRepository, UserRepository userRepository, PostVoteRepository postVoteRepository, AuthService authService) {
+    public PostService(ContentPostRepository contentPostRepository, PostRepository postRepository, ForumRepository forumRepository, UserRepository userRepository, PostVoteRepository postVoteRepository, AuthService authService, FriendService friendService, UserForumRelationRepository userForumRelationRepository) {
         this.contentPostRepository = contentPostRepository;
         this.postRepository = postRepository;
         this.forumRepository = forumRepository;
         this.userRepository = userRepository;
         this.postVoteRepository = postVoteRepository;
         this.authService = authService;
+        this.friendService = friendService;
+        this.userForumRelationRepository = userForumRelationRepository;
     }
-    
+
     public Post addContentAndPost(Post post, ContentPost[] contentPost) {
-        
+
         Post currentPost = this.postRepository.save(post);
 
         for (ContentPost content : contentPost) {
@@ -44,22 +49,46 @@ public class PostService {
     }
 
     public List<PostWithUserAndForum> getPostWithUserAndForumList(Long forumId, String category, int offset, int limit) throws Exception {
-        List<Post> posts;
+        List<Post> posts = new ArrayList<>();
         List<PostWithUserAndForum> postsWithUserAndForum = new ArrayList<>();
-        if(forumId != null){
+        //forum page
+        if (forumId != null) {
             Forum forum = this.forumRepository.getForumById(forumId);
-            if(forum == null) {
+            if (forum == null) {
                 throw new Exception("Forum not found");
             }
-            if(category.equals("Popular")) {
-                posts = this.postRepository.    findAllByForumIdOrderByNoteDescCreationDateDesc(forumId, PageRequest.of(offset, limit));
+            if (category.equals("Popular")) {
+                posts = this.postRepository.findAllByForumIdOrderByNoteDescCreationDateDesc(forumId, PageRequest.of(offset, limit));
             } else {
                 posts = this.postRepository.findAllByForumIdOrderByCreationDateDesc(forumId, PageRequest.of(offset, limit));
             }
-        } else {
-            posts = this.postRepository.findAll();
         }
-        for (Post post :posts) {
+        //homepage
+        else {
+            User user = this.authService.getAuthUser();
+            List<Long> friends = new ArrayList<>();
+            List<Long> forums = new ArrayList<>();
+            //logged
+            if(user != null) {
+                friends = this.friendService.getUserFriends(user.getId());
+                forums = this.userForumRelationRepository.getAllByUserId(user.getId()).stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
+                if (category.equals("Popular")) {
+                    posts = this.postRepository.findAllByUserIdInOrForumIdInOrderByNoteDescCreationDateDesc(friends, forums, PageRequest.of(offset, limit));
+                } else {
+                    posts = this.postRepository.findAllByUserIdInOrForumIdInOrderByCreationDateDesc(friends, forums, PageRequest.of(offset, limit));
+                }
+            }
+            //unlogged
+            if (user == null || (forums.size() == 0 ||friends.size() == 0)) {
+                if (category.equals("Popular")) {
+                    posts = this.postRepository.findAllByIdNotNullOrderByNoteDescCreationDateDesc(PageRequest.of(offset, limit));
+                } else {
+                    posts = this.postRepository.findAllByIdNotNullOrderByCreationDateDesc(PageRequest.of(offset, limit));
+                }
+            }
+
+        }
+        for (Post post : posts) {
             User user = this.userRepository.getUserById(post.getUserId());
             Forum forum = this.forumRepository.getForumById(post.getForumId());
             User authUser = this.authService.getAuthUser();

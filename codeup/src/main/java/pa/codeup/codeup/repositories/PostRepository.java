@@ -20,7 +20,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByTitleLikeOrContentLikeAndForumIdIn(@Param("title") String title,@Param("content") String content, List<Long> forumId);
     List<Post> findAllByTitleLikeOrContentLikeAndForumIdNotIn(@Param("title") String title,@Param("content") String content, List<Long> forumId);
     List<Post> findAllByForumId(Long forumId);
+
+    //forum page
     List<Post> findAllByForumIdOrderByCreationDateDesc(Long forumId, Pageable pageable);
     List<Post> findAllByForumIdOrderByNoteDescCreationDateDesc(Long forumId, Pageable pageable);
+
+    //unlogged homepage
+    List<Post> findAllByIdNotNullOrderByNoteDescCreationDateDesc(Pageable pageable);
+    List<Post> findAllByIdNotNullOrderByCreationDateDesc(Pageable pageable);
+
+    //logged homepage
+    List<Post> findAllByUserIdInOrForumIdInOrderByNoteDescCreationDateDesc(List<Long> usersIds, List<Long> forumsIds, Pageable pageable);
+    List<Post> findAllByUserIdInOrForumIdInOrderByCreationDateDesc(List<Long> usersIds, List<Long> forumsIds, Pageable pageable);
 
 }
