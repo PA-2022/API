@@ -2,7 +2,7 @@ package pa.codeup.codeup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pa.codeup.codeup.entities.Comment;
+import pa.codeup.codeup.dto.Comment;
 import pa.codeup.codeup.dto.CommentVote;
 import pa.codeup.codeup.repositories.CommentRepository;
 import pa.codeup.codeup.repositories.CommentVoteRepository;

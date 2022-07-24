@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.User;
-import pa.codeup.codeup.entities.Comment;
+import pa.codeup.codeup.dto.Comment;
 import pa.codeup.codeup.entities.CommentWithUser;
 import pa.codeup.codeup.entities.PostComment;
 import pa.codeup.codeup.repositories.CommentRepository;

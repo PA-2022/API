@@ -3,7 +3,7 @@ package pa.codeup.codeup.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import pa.codeup.codeup.entities.Comment;
+import pa.codeup.codeup.dto.Comment;
 
 import java.util.List;
 
