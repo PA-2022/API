@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.CommentVote;
+import pa.codeup.codeup.dto.PostVote;
 import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.CommentVoteService;
@@ -33,12 +34,22 @@ public class CommentVoteController {
 
     @PutMapping()
     public CommentVote putUserVoteForComment(@RequestBody CommentVote commentVote) {
+
         User currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         commentVote.setUserId(currentUser.getId());
-        return this.commentVoteService.saveAndFlush(commentVote);
+        CommentVote exists = this.commentVoteService.getCommentVoteByCommentIdAndUserId(commentVote.getCommentId(), currentUser.getId()).orElse(null);
+        if(exists == null) {
+            return this.commentVoteService.saveAndFlush(commentVote);
+        }
+        if(exists.isUpvote() == commentVote.isUpvote()) {
+            this.commentVoteService.delete(exists);
+            return null;
+        }
+        exists.setUpvote(commentVote.isUpvote());
+        return this.commentVoteService.saveAndFlush(exists);
     }
 
     @DeleteMapping

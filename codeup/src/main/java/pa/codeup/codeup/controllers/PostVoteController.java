@@ -44,6 +44,10 @@ public class PostVoteController {
         if(exists == null) {
             return this.postVoteService.saveAndFlush(postVote);
         }
+        if(exists.isUpvote() == postVote.isUpvote()) {
+         this.postVoteService.delete(exists);
+         return null;
+        }
         exists.setUpvote(postVote.isUpvote());
         return this.postVoteService.saveAndFlush(exists);
     }
