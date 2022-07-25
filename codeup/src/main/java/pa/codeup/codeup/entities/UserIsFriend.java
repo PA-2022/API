@@ -1,19 +1,19 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 
 public class UserIsFriend {
-    private User user;
+    private UserDao user;
     private boolean isFriend;
     private boolean isAccepted;
 
-    public UserIsFriend(User user, boolean isFriend, boolean isAccepted) {
+    public UserIsFriend(UserDao user, boolean isFriend, boolean isAccepted) {
         this.user = user;
         this.isFriend = isFriend;
         this.isAccepted = isAccepted;
     }
 
-    public User getUser() {
+    public UserDao getUser() {
         return user;
     }
 

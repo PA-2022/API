@@ -1,12 +1,10 @@
 package pa.codeup.codeup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.Comment;
 import pa.codeup.codeup.dto.CommentVoteDao;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.CommentVote;
 import pa.codeup.codeup.repositories.CommentRepository;
 import pa.codeup.codeup.repositories.CommentVoteRepository;
@@ -46,7 +44,7 @@ public class CommentVoteService {
         this.commentRepository.saveAndFlush(comment);
     }
 
-    public CommentVote putCommentVote(CommentVote commentVote, User currentUser) {
+    public CommentVote putCommentVote(CommentVote commentVote, UserDao currentUser) {
         commentVote.setUserId(currentUser.getId());
         CommentVoteDao exists = this.getCommentVoteByCommentIdAndUserId(commentVote.getCommentId(), currentUser.getId()).orElse(null);
         if(exists == null) {

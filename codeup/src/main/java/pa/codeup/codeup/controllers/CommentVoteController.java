@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.CommentVoteDao;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.CommentVote;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.CommentVoteService;
@@ -27,7 +27,7 @@ public class CommentVoteController {
 
     @GetMapping("/comment/{id}")
     public ResponseEntity<CommentVote> getUserVoteForComment(@PathVariable Long id) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -41,7 +41,7 @@ public class CommentVoteController {
     @PutMapping()
     public ResponseEntity<CommentVote> putUserVoteForComment(@RequestBody CommentVote commentVote) {
 
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -54,7 +54,7 @@ public class CommentVoteController {
 
     @DeleteMapping
     public boolean deleteVoteForComment(@RequestBody CommentVoteDao commentVoteDao) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pa.codeup.codeup.dto.AuthEntity;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
+import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
@@ -20,7 +20,7 @@ public class AuthService {
         this.authRepository = authRepository;
     }
 
-    public User getAuthUser() {
+    public UserDao getAuthUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username;
@@ -33,7 +33,7 @@ public class AuthService {
     }
 
     public String hasRight() {
-        User loggedUser = this.getAuthUser();
+        UserDao loggedUser = this.getAuthUser();
         if(loggedUser == null){
             return null;
         }

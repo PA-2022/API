@@ -65,7 +65,7 @@ public class PostService {
         }
         //homepage
         else {
-            User user = this.authService.getAuthUser();
+            UserDao user = this.authService.getAuthUser();
             List<Long> friends = new ArrayList<>();
             List<Long> forums = new ArrayList<>();
             //logged
@@ -89,9 +89,9 @@ public class PostService {
 
         }
         for (Post post : posts) {
-            User user = this.userRepository.getUserById(post.getUserId());
+            UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
-            User authUser = this.authService.getAuthUser();
+            UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
@@ -121,9 +121,9 @@ public class PostService {
         List<PostWithUserAndForum> postsWithUserAndForum = new ArrayList<>();
 
         for (Post post : posts) {
-            User user = this.userRepository.getUserById(post.getUserId());
+            UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
-            User authUser = this.authService.getAuthUser();
+            UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {

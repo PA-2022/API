@@ -1,17 +1,17 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 
 public class UserAndFriend {
-    private User user;
+    private UserDao user;
     private Friend friend;
 
-    public UserAndFriend(User user, Friend friend) {
+    public UserAndFriend(UserDao user, Friend friend) {
         this.user = user;
         this.friend = friend;
     }
 
-    public User getUser() {
+    public UserDao getUser() {
         return user;
     }
 

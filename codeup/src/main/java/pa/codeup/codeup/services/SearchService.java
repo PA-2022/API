@@ -33,10 +33,10 @@ public class SearchService {
     }
 
     public SearchEntity performSeach(String searchString) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
 
         List<Post> randomPosts = new ArrayList<>();
-        List<User> users;
+        List<UserDao> users;
         List<Post> subscribedPosts = new ArrayList<>();
         if (currentUser != null) {
             users = userRepository.findAllByUsernameLikeAndIdNot("%" + searchString + "%", currentUser.getId()).stream().limit(10).collect(Collectors.toList());
@@ -50,14 +50,14 @@ public class SearchService {
         }
 
         List<UserIsFriend> usersAreFriends = new ArrayList<>();
-        for (User user : users) {
+        for (UserDao user : users) {
             Friend isFriend = currentUser != null ? this.friendService.getFriend(currentUser, user.getId()) : null;
             UserIsFriend uf = new UserIsFriend(user, isFriend != null, isFriend != null && isFriend.isAccepted());
             usersAreFriends.add(uf);
         }
         List<PostWithUserAndForum> randomPostsWithUserAndForum = new ArrayList<>();
         for (Post post : randomPosts) {
-            User user = this.userRepository.getUserById(post.getUserId());
+            UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             if (currentUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
@@ -72,7 +72,7 @@ public class SearchService {
         }
         List<PostWithUserAndForum> subscribedPostsWithUserAndForum = new ArrayList<>();
         for (Post post : subscribedPosts) {
-            User user = this.userRepository.getUserById(post.getUserId());
+            UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
             if (vote != null) {
@@ -88,9 +88,9 @@ public class SearchService {
         List<Post> posts = this.postRepository.findAllByTitleLikeOrContentLike("%" + searchString + "%", "%" + searchString + "%");
         List<PostWithUserAndForum> postWithUserAndForums = new ArrayList<>();
         for (Post post : posts) {
-            User user = this.userRepository.getUserById(post.getUserId());
+            UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
-            User authUser = this.authService.getAuthUser();
+            UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {

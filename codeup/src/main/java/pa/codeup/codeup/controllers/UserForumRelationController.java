@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.ForumDao;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.dto.UserForumRelation;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.UserForumRelationRepository;
@@ -32,7 +32,7 @@ public class UserForumRelationController {
 
     @GetMapping("/forum/{forumId}")
     public UserForumRelation getRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
@@ -47,7 +47,7 @@ public class UserForumRelationController {
 
     @PostMapping("/add/forum/{forumId}")
     public UserForumRelation addRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
@@ -63,7 +63,7 @@ public class UserForumRelationController {
 
     @DeleteMapping("/delete/forum/{forumId}")
     public boolean deleteRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
@@ -79,7 +79,7 @@ public class UserForumRelationController {
 
     @GetMapping("/all-by-logged-user")
     public List<UserForumRelation> getAllByLoggedUser() {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }

@@ -1,8 +1,5 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.Post;
-import pa.codeup.codeup.dto.User;
-
 import java.util.List;
 
 public class SearchEntity {

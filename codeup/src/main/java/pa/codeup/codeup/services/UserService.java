@@ -7,7 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import pa.codeup.codeup.dto.AuthEntity;
 import pa.codeup.codeup.dto.Images;
 import pa.codeup.codeup.dto.Token;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
+import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.ImageRepository;
 import pa.codeup.codeup.repositories.TokenRepository;
@@ -16,9 +17,12 @@ import pa.codeup.codeup.repositories.UserRepository;
 import java.io.*;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 import java.io.FileOutputStream;
+import java.util.stream.Collectors;
+
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -64,7 +68,7 @@ public class UserService {
         return true;
     }
 
-    public boolean sendPasswordChangeEmail(User user) {
+    public boolean sendPasswordChangeEmail(UserDao user) {
         String token = passwordChangeTokenCreation(user.getUsername(), user.getId());
         String frontUrl = "http://localhost:4200/change-password/" + token;
         String emailContent = "<table style=\"max-width: 670px; background: #fff; border-radius: 3px; text-align: center; -webkit-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); -moz-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); box-shadow: 0 6px 18px 0 rgba(0,0,0,.06);\" border=\"0\" width=\"95%\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
@@ -110,7 +114,7 @@ public class UserService {
         if(token == null || !token.isActive()) {
             return false;
         }
-        User user = this.userRepository.getUserById(token.getUserId());
+        UserDao user = this.userRepository.getUserById(token.getUserId());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
@@ -126,7 +130,7 @@ public class UserService {
     }
 
     public boolean emailUserLostPassword(String email) {
-        User user = this.userRepository.findByEmail(email);
+        UserDao user = this.userRepository.findByEmail(email);
         if(user == null) {
             return false;
         }
@@ -137,7 +141,7 @@ public class UserService {
         return this.imageRepository.countAllByImageNameLike("%" + filename.substring(0, filename.lastIndexOf('.')) + "%");
     }
 
-    public String uploadImage(MultipartFile multipartFile, User user) throws IOException {
+    public String uploadImage(MultipartFile multipartFile, UserDao user) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         FileOutputStream fos = new FileOutputStream( file );
         fos.write( multipartFile.getBytes() );
@@ -181,8 +185,8 @@ public class UserService {
         return url;
     }
 
-    public User updateUser(User updatedUser) {
-        User userDto = this.userRepository.getUserById(updatedUser.getId());
+    public User updateUser(UserDao updatedUser) {
+        UserDao userDto = this.userRepository.getUserById(updatedUser.getId());
         AuthEntity authEntity = this.authRepository.getByUsername(userDto.getUsername());
 
         userDto.setUsername(updatedUser.getUsername());
@@ -196,7 +200,34 @@ public class UserService {
         this.authRepository.save(au);
 
 
-        return userDto;
+        return userDto.toEntity();
 
+    }
+
+    public User addUser(UserDao user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+
+        user.setPassword(encodedPassword);
+
+        UserDao userDao = this.userRepository.save(user);
+        this.authRepository.save(new AuthEntity(user.getUsername(), "ROLE_USER"));
+        return userDao.toEntity();
+    }
+
+    public List<User> findAll() {
+        return this.userRepository.findAll().stream().map(UserDao::toEntity).collect(Collectors.toList());
+    }
+
+    public User getUserById(Long id) {
+        return this.userRepository.getUserById(id).toEntity();
+    }
+
+    public List<UserDao> findAllByUsernameLike(String username) {
+        return this.userRepository.findAllByUsernameLike(username);
+    }
+
+    public List<UserDao> findAllByEmailLike(String email) {
+        return this.userRepository.findAllByEmailLike(email);
     }
 }

@@ -3,20 +3,18 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import pa.codeup.codeup.dto.ContentPost;
 import pa.codeup.codeup.dto.Post;
 import pa.codeup.codeup.dto.PostContent;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.PostWithUserAndForum;
 import pa.codeup.codeup.repositories.ContentPostRepository;
 import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.repositories.PostRepository;
 import pa.codeup.codeup.services.AuthService;
-import pa.codeup.codeup.services.CodeService;
 import pa.codeup.codeup.services.PostService;
 
 import java.util.List;
@@ -45,7 +43,7 @@ public class PostController {
 
     @PostMapping("/add")
     public Post addPost(@RequestBody PostContent postContent) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
@@ -109,7 +107,7 @@ public class PostController {
 
     @PutMapping()
     public Post updatePost(@RequestBody Post post){
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
@@ -121,7 +119,7 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     public boolean deletePost(@PathVariable Long postId){
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         Post post = this.postRepository.getPostById(postId);
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");

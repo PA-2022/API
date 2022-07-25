@@ -2,16 +2,16 @@ package pa.codeup.codeup.entities;
 
 import pa.codeup.codeup.dto.Comment;
 import pa.codeup.codeup.dto.CommentVoteDao;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 
 import java.util.Optional;
 
 public class CommentWithUser {
     private Comment comment;
-    private User user;
+    private UserDao user;
     private Optional<CommentVoteDao> commentVote;
 
-    public CommentWithUser(Comment comment, User user, Optional<CommentVoteDao> commentVote) {
+    public CommentWithUser(Comment comment, UserDao user, Optional<CommentVoteDao> commentVote) {
         this.comment = comment;
         this.user = user;
         this.commentVote = commentVote;
@@ -21,7 +21,7 @@ public class CommentWithUser {
         return comment;
     }
 
-    public User getUser() {
+    public UserDao getUser() {
         return user;
     }
 

@@ -1,13 +1,11 @@
 package pa.codeup.codeup.services;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.FriendDto;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.Friend;
 import pa.codeup.codeup.entities.UserAndFriend;
-import pa.codeup.codeup.entities.UserIsFriend;
 import pa.codeup.codeup.repositories.FriendRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
@@ -28,7 +26,7 @@ public class FriendService {
     }
 
     public Friend addFriend(Long currentUserUd, Long friendId) throws Exception {
-        User friend = this.userRepository.getUserById(friendId);
+        UserDao friend = this.userRepository.getUserById(friendId);
         if(friend == null) {
             throw new Exception("cant find friend");
         }
@@ -45,7 +43,7 @@ public class FriendService {
     }
 
     public Friend acceptFriend(Long currentUserId, Long friendId) throws Exception {
-        User friend = this.userRepository.getUserById(friendId);
+        UserDao friend = this.userRepository.getUserById(friendId);
         if(friend == null) {
             throw new Exception("cant find friend");
         }
@@ -59,7 +57,7 @@ public class FriendService {
     }
 
     public void deleteFriend(Long currentUserId, Long friendId) throws Exception {
-        User friend = this.userRepository.getUserById(friendId);
+        UserDao friend = this.userRepository.getUserById(friendId);
         if(friend == null) {
             throw new Exception("cant find friend");
         }
@@ -71,7 +69,7 @@ public class FriendService {
         this.friendRepository.delete(Objects.requireNonNullElse(existsFriendA, existsFriendB));
     }
 
-    public Friend getFriend(User currentUser, Long friendId) {
+    public Friend getFriend(UserDao currentUser, Long friendId) {
         FriendDto existsFriendA = this.friendRepository.findByUserIdAndFriendId(friendId, currentUser.getId());
         FriendDto existsFriendB = this.friendRepository.findByUserIdAndFriendId(currentUser.getId(), friendId);
         if(existsFriendA == null && existsFriendB == null) {
@@ -81,7 +79,7 @@ public class FriendService {
     }
 
     public List<UserAndFriend> getList(Long userId) throws Exception {
-        User currentUser = this.userRepository.getUserById(userId);
+        UserDao currentUser = this.userRepository.getUserById(userId);
         if(currentUser == null) {
             throw new Exception("User doesnt exists");
         }
@@ -90,14 +88,14 @@ public class FriendService {
         for (FriendDto friendDto: friendsDtos) {
             Friend friend = friendDto.toEntity();
             Long friendId = Objects.equals(friend.getUserId(), currentUser.getId()) ? friend.getFriendId() : friend.getUserId();
-            User friendUser = this.userRepository.getUserById(friendId);
+            UserDao friendUser = this.userRepository.getUserById(friendId);
             userAreFriends.add(new UserAndFriend(friendUser, friend));
         }
         return userAreFriends;
     }
 
     public List<Long> getUserFriends(Long userId) throws Exception {
-        User currentUser = this.userRepository.getUserById(userId);
+        UserDao currentUser = this.userRepository.getUserById(userId);
         if(currentUser == null) {
             throw new Exception("User doesnt exists");
         }

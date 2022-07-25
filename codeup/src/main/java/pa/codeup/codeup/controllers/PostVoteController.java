@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.PostVote;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.PostVoteService;
 
@@ -26,7 +26,7 @@ public class PostVoteController {
 
     @GetMapping("/post/{id}")
     public Optional<PostVote> getUserVoteForPost(@PathVariable Long id) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -35,7 +35,7 @@ public class PostVoteController {
 
     @PutMapping()
     public PostVote putUserVoteForPost(@RequestBody PostVote postVote) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -54,7 +54,7 @@ public class PostVoteController {
 
     @DeleteMapping
     public boolean deleteVoteForPost(@RequestBody PostVote postVote) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }

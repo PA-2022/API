@@ -4,7 +4,7 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.dto.Comment;
 import pa.codeup.codeup.entities.CommentWithUser;
 import pa.codeup.codeup.entities.PostComment;
@@ -47,7 +47,7 @@ public class CommentController {
     public PostComment getCommentPost(@PathVariable Long id) {
 
         Comment comment = commentRepository.getCommentById(id);
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         List<CommentWithUser> responses = new ArrayList<>();
         this.commentRepository.getAllByCommentParentId(comment.getId()).forEach(simpleResponse -> {
             responses.add(new CommentWithUser(simpleResponse, this.userRepository.getUserById(simpleResponse.getUserId()), currentUser != null
@@ -71,7 +71,7 @@ public class CommentController {
     public List<PostComment> getPostComments(@PathVariable Long postId) {
         List<PostComment> postComments = new ArrayList<>();
         List<Comment> comments = commentRepository.getAllByPostIdAndCommentParentIdIsNull(postId);
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         comments.forEach(comment -> {
             List<CommentWithUser> responses = new ArrayList<>();
             this.commentRepository.getAllByCommentParentId(comment.getId()).forEach(simpleResponse -> {

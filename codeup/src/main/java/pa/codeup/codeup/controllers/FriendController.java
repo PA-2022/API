@@ -5,19 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.w3c.dom.stylesheets.LinkStyle;
-import pa.codeup.codeup.dto.ResponseOutputDAO;
-import pa.codeup.codeup.dto.User;
-import pa.codeup.codeup.entities.ExternalCode;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.Friend;
 import pa.codeup.codeup.entities.UserAndFriend;
-import pa.codeup.codeup.entities.UserIsFriend;
-import pa.codeup.codeup.repositories.ForumRepository;
 import pa.codeup.codeup.services.AuthService;
-import pa.codeup.codeup.services.CodeService;
 import pa.codeup.codeup.services.FriendService;
-
-import javax.script.ScriptException;
 
 import java.util.List;
 
@@ -42,7 +34,7 @@ public class FriendController {
     @PostMapping("/add-friend/{friendId}")
     @ResponseBody
     public ResponseEntity<Friend> executeCode(@PathVariable Long friendId) {
-        User user = this.authService.getAuthUser();
+        UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -57,7 +49,7 @@ public class FriendController {
     @PostMapping("accept-friend/{friendId}")
     @ResponseBody
     public ResponseEntity<Friend> acceptFriend(@PathVariable Long friendId){
-        User user = this.authService.getAuthUser();
+        UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -72,7 +64,7 @@ public class FriendController {
     @DeleteMapping("delete-friend/{friendId}")
     @ResponseBody
     public ResponseEntity<String> deleteFriend(@PathVariable Long friendId){
-        User user = this.authService.getAuthUser();
+        UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
@@ -86,7 +78,7 @@ public class FriendController {
 
     @GetMapping("is-friend/{friendId}")
     public ResponseEntity<Friend> getIsFriend(@PathVariable Long friendId){
-        User user = this.authService.getAuthUser();
+        UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
