@@ -71,7 +71,7 @@ public class PostService {
             //logged
             if(user != null) {
                 friends = this.friendService.getUserFriends(user.getId());
-                forums = this.userForumRelationRepository.getAllByUserId(user.getId()).stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
+                forums = this.userForumRelationRepository.getAllByUserId(user.getId()).stream().map(UserForumRelationDao::getForumId).collect(Collectors.toList());
                 if (category.equals("Popular")) {
                     posts = this.postRepository.findAllByUserIdInOrForumIdInOrderByNoteDescCreationDateDesc(friends, forums, PageRequest.of(offset, limit));
                 } else {

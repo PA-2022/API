@@ -40,8 +40,8 @@ public class SearchService {
         List<Post> subscribedPosts = new ArrayList<>();
         if (currentUser != null) {
             users = userRepository.findAllByUsernameLikeAndIdNot("%" + searchString + "%", currentUser.getId()).stream().limit(10).collect(Collectors.toList());
-            List<UserForumRelation> userForumRelations = userForumRelationRepository.getAllByUserId(currentUser.getId());
-            List<Long> forumsIds = userForumRelations.stream().map(UserForumRelation::getForumId).collect(Collectors.toList());
+            List<UserForumRelationDao> userForumRelationDaos = userForumRelationRepository.getAllByUserId(currentUser.getId());
+            List<Long> forumsIds = userForumRelationDaos.stream().map(UserForumRelationDao::getForumId).collect(Collectors.toList());
             randomPosts = postRepository.findAllByTitleLikeAndForumIdNotInAndUserIdNot("%" + searchString + "%",  forumsIds, currentUser.getId()).stream().limit(10).collect(Collectors.toList());
             subscribedPosts = postRepository.findAllByTitleLikeAndForumIdInAndUserIdNot("%" + searchString + "%", forumsIds, currentUser.getId()).stream().limit(10).collect(Collectors.toList());
         } else {
