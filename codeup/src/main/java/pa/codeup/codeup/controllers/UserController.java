@@ -80,17 +80,11 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         User toUpdate = this.userRepo.getUserById(id);
-        AuthEntity authEntity = this.authRepository.getByUsername(toUpdate.getUsername());
-        toUpdate.setFirstname(updatedUser.getFirstname());
-        toUpdate.setLastname(updatedUser.getLastname());
-        toUpdate.setUsername(updatedUser.getUsername());
-        toUpdate.setEmail(updatedUser.getEmail());
-
-        toUpdate = this.userRepo.saveAndFlush(toUpdate);
-        this.authRepository.save(new AuthEntity(toUpdate.getUsername(), "ROLE_USER"));
-        this.authRepository.delete(authEntity);
-
-        return toUpdate;
+        User loggedUser = this.authService.getAuthUser();
+        if(loggedUser == null || !toUpdate.getId().equals(loggedUser.getId())){
+            throw new ResponseStatusException(UNAUTHORIZED, "Can access this user");
+        }
+        return this.userService.updateUser(updatedUser);
     }
 
     @GetMapping("/test")

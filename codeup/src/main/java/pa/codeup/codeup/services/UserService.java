@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pa.codeup.codeup.dto.AuthEntity;
 import pa.codeup.codeup.dto.Images;
 import pa.codeup.codeup.dto.Token;
 import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.ImageRepository;
 import pa.codeup.codeup.repositories.TokenRepository;
 import pa.codeup.codeup.repositories.UserRepository;
@@ -34,17 +36,19 @@ public class UserService {
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final AuthRepository authRepository;
 
     private static final String REGION = "eu-west-1";
     private static final String BUCKET_NAME = "my-awesome-compartment";
     private static final String DESTINATION_FOLDER = "dossier";
 
     @Autowired
-    public UserService(TokenRepository tokenRepository, MailjetEmailService mailjetEmailService, UserRepository userRepository, ImageRepository imageRepository) {
+    public UserService(TokenRepository tokenRepository, MailjetEmailService mailjetEmailService, UserRepository userRepository, ImageRepository imageRepository, AuthRepository authRepository) {
         this.tokenRepository = tokenRepository;
         this.emailService = mailjetEmailService;
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
+        this.authRepository = authRepository;
     }
 
     private String passwordChangeTokenCreation(String username, Long userId){
@@ -175,5 +179,24 @@ public class UserService {
 
         this.userRepository.saveAndFlush(user);
         return url;
+    }
+
+    public User updateUser(User updatedUser) {
+        User userDto = this.userRepository.getUserById(updatedUser.getId());
+        AuthEntity authEntity = this.authRepository.getByUsername(userDto.getUsername());
+
+        userDto.setUsername(updatedUser.getUsername());
+        userDto.setEmail(updatedUser.getEmail());
+        userDto.setFirstname(updatedUser.getFirstname());
+        userDto.setLastname(updatedUser.getLastname());
+        this.userRepository.saveAndFlush(userDto);
+        AuthEntity au = new AuthEntity(userDto.getUsername(), "ROLE_USER");
+
+        this.authRepository.delete(authEntity);
+        this.authRepository.save(au);
+
+
+        return userDto;
+
     }
 }
