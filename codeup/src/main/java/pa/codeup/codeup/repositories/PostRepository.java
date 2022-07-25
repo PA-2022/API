@@ -17,8 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Post getPostById(Long id);
     void deletePostById(Long postId);
     List<Post> findAllByTitleLikeOrContentLike(@Param("title") String title, @Param("content") String content);
-    List<Post> findAllByTitleLikeOrContentLikeAndForumIdIn(@Param("title") String title,@Param("content") String content, List<Long> forumId);
-    List<Post> findAllByTitleLikeOrContentLikeAndForumIdNotIn(@Param("title") String title,@Param("content") String content, List<Long> forumId);
+    List<Post> findAllByTitleLikeAndForumIdInAndUserIdNot(@Param("title") String title, List<Long> forumId, Long userId);
+    List<Post> findAllByTitleLikeAndForumIdNotInAndUserIdNot(@Param("title") String title, List<Long> forumId, Long userId);
     List<Post> findAllByForumId(Long forumId);
 
     //forum page

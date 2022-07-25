@@ -142,7 +142,6 @@ public class PostController {
             offset = offset/limit;
             return new ResponseEntity<>(this.postService.getUserPosts(userId, category , offset, limit), HttpStatus.OK);
         } catch(Exception e) {
-            System.out.println(e);
             throw new ResponseStatusException(NOT_FOUND, "User not found");
         }
     }
