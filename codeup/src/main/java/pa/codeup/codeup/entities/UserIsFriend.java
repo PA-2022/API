@@ -1,10 +1,6 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.Comment;
-import pa.codeup.codeup.dto.CommentVote;
 import pa.codeup.codeup.dto.User;
-
-import java.util.Optional;
 
 public class UserIsFriend {
     private User user;

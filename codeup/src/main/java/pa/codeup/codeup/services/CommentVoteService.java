@@ -1,9 +1,13 @@
 package pa.codeup.codeup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.Comment;
-import pa.codeup.codeup.dto.CommentVote;
+import pa.codeup.codeup.dto.CommentVoteDao;
+import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.entities.CommentVote;
 import pa.codeup.codeup.repositories.CommentRepository;
 import pa.codeup.codeup.repositories.CommentVoteRepository;
 
@@ -21,24 +25,38 @@ public class CommentVoteService {
         this.commentRepository = commentRepository;
     }
 
-    public Optional<CommentVote> getCommentVoteByCommentIdAndUserId(Long commentId, Long userId) {
+    public Optional<CommentVoteDao> getCommentVoteByCommentIdAndUserId(Long commentId, Long userId) {
         return this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(commentId, userId);
     }
 
-    public CommentVote saveAndFlush(CommentVote commentVote) {
-        this.commentVoteRepository.saveAndFlush(commentVote);
-        this.setCommentNote(this.commentRepository.getById(commentVote.getCommentId()));
-        return commentVote;
+    public CommentVoteDao saveAndFlush(CommentVoteDao commentVoteDao) {
+        this.commentVoteRepository.saveAndFlush(commentVoteDao);
+        this.setCommentNote(this.commentRepository.getById(commentVoteDao.getCommentId()));
+        return commentVoteDao;
     }
 
-    public void delete(CommentVote commentVote) {
-        this.commentVoteRepository.delete(commentVote);
-        this.setCommentNote(this.commentRepository.getById(commentVote.getCommentId()));
+    public void delete(CommentVoteDao commentVoteDao) {
+        this.commentVoteRepository.delete(commentVoteDao);
+        this.setCommentNote(this.commentRepository.getById(commentVoteDao.getCommentId()));
     }
 
     public void setCommentNote(Comment comment) {
         comment.setNote(this.commentVoteRepository.countAllByCommentIdAndUpvote(comment.getId(), true)
                 - this.commentVoteRepository.countAllByCommentIdAndUpvote(comment.getId(), false));
         this.commentRepository.saveAndFlush(comment);
+    }
+
+    public CommentVote putCommentVote(CommentVote commentVote, User currentUser) {
+        commentVote.setUserId(currentUser.getId());
+        CommentVoteDao exists = this.getCommentVoteByCommentIdAndUserId(commentVote.getCommentId(), currentUser.getId()).orElse(null);
+        if(exists == null) {
+            return this.saveAndFlush(commentVote.createDao()).toEntity();
+        }
+        if(exists.isUpvote() == commentVote.isUpvote()) {
+            this.delete(exists);
+            return null;
+        }
+        exists.setUpvote(commentVote.isUpvote());
+        return this.saveAndFlush(exists).toEntity();
     }
 }
