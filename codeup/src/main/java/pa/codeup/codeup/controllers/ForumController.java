@@ -2,10 +2,12 @@ package pa.codeup.codeup.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pa.codeup.codeup.dto.Forum;
-import pa.codeup.codeup.repositories.ForumRepository;
+import pa.codeup.codeup.dto.ForumDao;
+import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.services.ForumService;
 
 import java.util.List;
 
@@ -13,25 +15,25 @@ import java.util.List;
 @RequestMapping("/forums")
 public class ForumController {
 
-    private final ForumRepository forumRepository;
+    private final ForumService forumService;
 
     @Autowired
-    public ForumController(ForumRepository forumRepository) {
-        this.forumRepository = forumRepository;
+    public ForumController(ForumService forumService) {
+        this.forumService = forumService;
     }
 
     @GetMapping("/{id}")
-    public Forum getForum(@PathVariable Long id) {
-        return forumRepository.getForumById(id);
+    public ResponseEntity<Forum> getForum(@PathVariable Long id) {
+        return new ResponseEntity<>(this.forumService.getForumById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public Long createForum(@RequestBody Forum forum) {
-        return forumRepository.save(forum).getId();
+    public ResponseEntity<Long> createForum(@RequestBody Forum forum) {
+        return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
     }
 
     @GetMapping("/all/limit/{limit}/offset/{offset}")
-    public List<Forum> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
-        return forumRepository.findByOrderByIdDesc(PageRequest.of(offset, limit));
+    public ResponseEntity<List<Forum>> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
+        return new ResponseEntity<>(this.forumService.findByOrderByIdDesc(offset, limit), HttpStatus.OK);
     }
 }

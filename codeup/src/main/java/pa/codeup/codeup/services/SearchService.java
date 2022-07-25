@@ -58,27 +58,27 @@ public class SearchService {
         List<PostWithUserAndForum> randomPostsWithUserAndForum = new ArrayList<>();
         for (Post post : randomPosts) {
             User user = this.userRepository.getUserById(post.getUserId());
-            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             if (currentUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
                 if (vote != null) {
-                    randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                    randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
-                    randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                    randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
                 }
             } else {
-                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
             }
         }
         List<PostWithUserAndForum> subscribedPostsWithUserAndForum = new ArrayList<>();
         for (Post post : subscribedPosts) {
             User user = this.userRepository.getUserById(post.getUserId());
-            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
             if (vote != null) {
-                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
             } else {
-                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
             }
         }
         return new SearchEntity(usersAreFriends, randomPostsWithUserAndForum, subscribedPostsWithUserAndForum);
@@ -89,17 +89,17 @@ public class SearchService {
         List<PostWithUserAndForum> postWithUserAndForums = new ArrayList<>();
         for (Post post : posts) {
             User user = this.userRepository.getUserById(post.getUserId());
-            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             User authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
-                    postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                    postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
-                    postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                    postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
                 }
             } else {
-                postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
             }
         }
         return postWithUserAndForums.stream().limit(6).toList();

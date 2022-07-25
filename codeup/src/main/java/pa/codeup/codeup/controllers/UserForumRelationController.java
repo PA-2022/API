@@ -3,7 +3,7 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.Forum;
+import pa.codeup.codeup.dto.ForumDao;
 import pa.codeup.codeup.dto.User;
 import pa.codeup.codeup.dto.UserForumRelation;
 import pa.codeup.codeup.repositories.ForumRepository;
@@ -51,13 +51,13 @@ public class UserForumRelationController {
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
-        Forum forum = this.forumRepository.getForumById(forumId);
-        if (forum == null) {
+        ForumDao forumDao = this.forumRepository.getForumById(forumId);
+        if (forumDao == null) {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find forum");
         }
         UserForumRelation userForumRelation = new UserForumRelation();
         userForumRelation.setUserId(currentUser.getId());
-        userForumRelation.setForumId(forum.getId());
+        userForumRelation.setForumId(forumDao.getId());
         return this.userForumRelationRepository.save(userForumRelation);
     }
 

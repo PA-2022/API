@@ -53,8 +53,8 @@ public class PostService {
         List<PostWithUserAndForum> postsWithUserAndForum = new ArrayList<>();
         //forum page
         if (forumId != null) {
-            Forum forum = this.forumRepository.getForumById(forumId);
-            if (forum == null) {
+            ForumDao forumDao = this.forumRepository.getForumById(forumId);
+            if (forumDao == null) {
                 throw new Exception("Forum not found");
             }
             if (category.equals("Popular")) {
@@ -90,17 +90,17 @@ public class PostService {
         }
         for (Post post : posts) {
             User user = this.userRepository.getUserById(post.getUserId());
-            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             User authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
-                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
-                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
                 }
             } else {
-                postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
             }
         }
         return postsWithUserAndForum;
@@ -122,17 +122,17 @@ public class PostService {
 
         for (Post post : posts) {
             User user = this.userRepository.getUserById(post.getUserId());
-            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             User authUser = this.authService.getAuthUser();
             if (authUser != null) {
                 PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
-                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
-                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
                 }
             } else {
-                postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), false, false));
             }
         }
         return postsWithUserAndForum;
