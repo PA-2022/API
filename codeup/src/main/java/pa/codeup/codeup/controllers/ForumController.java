@@ -5,21 +5,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pa.codeup.codeup.dto.ForumDao;
+import org.springframework.web.server.ResponseStatusException;
+import pa.codeup.codeup.dto.AuthEntity;
 import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.ForumService;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/forums")
 public class ForumController {
 
     private final ForumService forumService;
+    private final AuthService authService;
 
     @Autowired
-    public ForumController(ForumService forumService) {
+    public ForumController(ForumService forumService, AuthService authService) {
         this.forumService = forumService;
+        this.authService = authService;
     }
 
     @GetMapping("/{id}")
@@ -29,7 +35,12 @@ public class ForumController {
 
     @PostMapping("/add")
     public ResponseEntity<Long> createForum(@RequestBody Forum forum) {
-        return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
+        String rights = this.authService.hasRight();
+        if(rights != null && rights.equals("ADMIN")) {
+            return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/all/limit/{limit}/offset/{offset}")
