@@ -60,7 +60,7 @@ public class SearchService {
             UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             if (currentUser != null) {
-                PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
+                PostVoteDao vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
                 if (vote != null) {
                     randomPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
@@ -74,7 +74,7 @@ public class SearchService {
         for (Post post : subscribedPosts) {
             UserDao user = this.userRepository.getUserById(post.getUserId());
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
-            PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
+            PostVoteDao vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), currentUser.getId()).orElse(null);
             if (vote != null) {
                 subscribedPostsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
             } else {
@@ -92,7 +92,7 @@ public class SearchService {
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
-                PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
+                PostVoteDao vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
                     postWithUserAndForums.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {

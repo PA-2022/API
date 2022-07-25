@@ -93,7 +93,7 @@ public class PostService {
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
-                PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
+                PostVoteDao vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
                     postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
@@ -125,7 +125,7 @@ public class PostService {
             ForumDao forumDao = this.forumRepository.getForumById(post.getForumId());
             UserDao authUser = this.authService.getAuthUser();
             if (authUser != null) {
-                PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
+                PostVoteDao vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
                 if (vote != null) {
                     postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forumDao.getTitle(), forumDao.getColor(), true, vote.isUpvote()));
                 } else {
