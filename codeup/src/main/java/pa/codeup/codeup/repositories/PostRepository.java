@@ -33,4 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByUserIdInOrForumIdInOrderByNoteDescCreationDateDesc(List<Long> usersIds, List<Long> forumsIds, Pageable pageable);
     List<Post> findAllByUserIdInOrForumIdInOrderByCreationDateDesc(List<Long> usersIds, List<Long> forumsIds, Pageable pageable);
 
+    //user search
+    List<Post> findAllByUserIdOrderByNoteDescCreationDateDesc(Long userId, Pageable pageable);
+    List<Post> findAllByUserIdOrderByCreationDateDesc(Long userId, Pageable pageable);
 }

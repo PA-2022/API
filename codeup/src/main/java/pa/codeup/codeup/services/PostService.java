@@ -105,4 +105,38 @@ public class PostService {
         }
         return postsWithUserAndForum;
     }
+
+    public List<PostWithUserAndForum> getUserPosts(Long userId, String category, int offset, int limit) throws Exception {
+        if(this.userRepository.getUserById(userId) == null) {
+            throw new Exception("User not found");
+        }
+
+        List<Post> posts = new ArrayList<>();
+        if (category.equals("Popular")) {
+            posts = this.postRepository.findAllByUserIdOrderByNoteDescCreationDateDesc(userId, PageRequest.of(offset, limit));
+        } else {
+            posts = this.postRepository.findAllByUserIdOrderByCreationDateDesc(userId, PageRequest.of(offset, limit));
+        }
+
+        List<PostWithUserAndForum> postsWithUserAndForum = new ArrayList<>();
+
+        for (Post post : posts) {
+            User user = this.userRepository.getUserById(post.getUserId());
+            Forum forum = this.forumRepository.getForumById(post.getForumId());
+            User authUser = this.authService.getAuthUser();
+            if (authUser != null) {
+                PostVote vote = this.postVoteRepository.findPostVoteByPostIdAndUserId(post.getId(), authUser.getId()).orElse(null);
+                if (vote != null) {
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), true, vote.isUpvote()));
+                } else {
+                    postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+                }
+            } else {
+                postsWithUserAndForum.add(new PostWithUserAndForum(post, user.getUsername(), user.getProfilePictureUrl(), forum.getTitle(), forum.getColor(), false, false));
+            }
+        }
+        return postsWithUserAndForum;
+
+
+    }
 }

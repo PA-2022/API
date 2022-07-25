@@ -3,6 +3,7 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -132,6 +133,20 @@ public class PostController {
         this.postRepository.deleteById(postId);
 
         throw new ResponseStatusException(OK, "Post deleted");
+    }
+
+    @GetMapping("post-list/user/{userId}/category/{category}/offset/{offset}/limit/{limit}")
+    public ResponseEntity<List<PostWithUserAndForum>> getUserListPost(@PathVariable Long userId, @PathVariable String category, @PathVariable int offset, @PathVariable int limit){
+        try {
+            if(limit == 0) {
+                limit = 10;
+            }
+            offset = offset/limit;
+            return new ResponseEntity<>(this.postService.getUserPosts(userId, category , offset, limit), HttpStatus.OK);
+        } catch(Exception e) {
+            System.out.println(e);
+            throw new ResponseStatusException(NOT_FOUND, "User not found");
+        }
     }
 
 }
