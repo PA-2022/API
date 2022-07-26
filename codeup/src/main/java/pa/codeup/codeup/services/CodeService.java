@@ -39,7 +39,7 @@ public class CodeService {
         String url = "http://localhost:8090/codeEditor";
         ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, code, Object.class);
         Object responseBody = responseEntity.getBody();
-        // Object response = restTemplate.postForObject(url, code, ResponseOutputDAO.class);
+        Object response = restTemplate.postForObject(url, code, ResponseOutputDAO.class);
         return responseBody;
     }
 
