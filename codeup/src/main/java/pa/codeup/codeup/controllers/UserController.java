@@ -77,7 +77,7 @@ public class UserController {
 
     @GetMapping("/test")
     public String test() {
-        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs c'est ici :)" +
+        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs c'est ici :)))))" +
                 "<br>" +
                 "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
     }
