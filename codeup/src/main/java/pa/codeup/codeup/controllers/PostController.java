@@ -79,7 +79,7 @@ public class PostController {
         return this.postRepository.getPostByForumId(forumId);
     }
 
-    @GetMapping("post-list/forum/{forumId}/category/{category}/offset/{offset}/limit/{limit}")
+    @GetMapping("/post-list/forum/{forumId}/category/{category}/offset/{offset}/limit/{limit}")
     public ResponseEntity<List<PostWithUserAndForum>> getListPostByForum(@PathVariable Long forumId, @PathVariable String category, @PathVariable int offset, @PathVariable int limit){
         try {
             if(offset == 0 || limit == 0) {
@@ -92,7 +92,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("post-list/category/{category}/offset/{offset}/limit/{limit}")
+    @GetMapping("/post-list/category/{category}/offset/{offset}/limit/{limit}")
     public ResponseEntity<List<PostWithUserAndForum>> getListPost(@PathVariable String category, @PathVariable int offset, @PathVariable int limit){
         try {
             if(limit == 0) {
@@ -101,20 +101,28 @@ public class PostController {
             offset = offset/limit;
             return new ResponseEntity<>(this.postService.getPostWithUserAndForumList(null, category , offset, limit), HttpStatus.OK);
         } catch(Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(NOT_FOUND, "Forum not found");
         }
     }
 
     @PutMapping()
-    public Post updatePost(@RequestBody Post post){
+    public Post updatePost(@RequestBody PostContent post){
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
-        if (!Objects.equals(currentUser.getId(), this.postRepository.getPostById(post.getId()).getUserId())) {
+        if (!Objects.equals(currentUser.getId(), this.postRepository.getPostById(post.getPost().getId()).getUserId())) {
             throw new ResponseStatusException(UNAUTHORIZED, "User cant edit this post");
         }
-        return this.postRepository.saveAndFlush(post);
+
+        Post postToUpdate = this.postRepository.getPostById(post.getPost().getId());
+
+        if(postToUpdate == null) {
+            throw new ResponseStatusException(NOT_FOUND, "Post not found");
+        }
+
+        return this.postService.updatePost(post, postToUpdate);
     }
 
     @DeleteMapping("/{postId}")

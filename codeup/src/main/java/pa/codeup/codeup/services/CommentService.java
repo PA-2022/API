@@ -1,8 +1,12 @@
 package pa.codeup.codeup.services;
 
+import javax.swing.text.AbstractDocument.Content;
+
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.stereotype.Service;
 
 import pa.codeup.codeup.dto.Comment;
+import pa.codeup.codeup.dto.CommentContent;
 import pa.codeup.codeup.dto.ContentPost;
 import pa.codeup.codeup.repositories.CommentRepository;
 import pa.codeup.codeup.repositories.ContentPostRepository;
@@ -26,6 +30,23 @@ public class CommentService {
         }
 
         return currentComment;
+    }
+
+    public Comment updateComment(CommentContent newComment, Comment comment) {
+        // Comment comment = this.commentRepository.getCommentById(newComment.getComment().getId());
+
+        if(newComment.getContentPost().length <= 0){
+            this.commentRepository.deleteCommentById(comment.getId());
+        }
+
+        this.contentPostRepository.deleteAllByCommentId(comment.getId());
+
+        for (ContentPost content : newComment.getContentPost()) {
+            content.setCommentId(comment.getId());
+            this.contentPostRepository.save(content);
+        }
+
+        return comment;
     }
     
 }

@@ -2,6 +2,7 @@ package pa.codeup.codeup.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,8 +21,9 @@ import pa.codeup.codeup.services.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("comments")
@@ -114,8 +116,20 @@ public class CommentController {
     }
 
     @PutMapping()
-    @ResponseBody
-    public Long editComment(@RequestBody Comment comment) {
-        return commentRepository.saveAndFlush(comment).getId();
+    public Comment editComment(@RequestBody CommentContent comment) {
+        UserDao currentUser = authService.getAuthUser();
+        if (currentUser == null) {
+            throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
+        }
+        if (!Objects.equals(currentUser.getId(), this.commentRepository.getCommentById(comment.getComment().getId()).getUserId())) {
+            throw new ResponseStatusException(UNAUTHORIZED, "User cant edit this post");
+        }
+
+        Comment commentToUpdate = this.commentRepository.getCommentById(comment.getComment().getId());
+        if (commentToUpdate == null) {
+            throw new ResponseStatusException(NOT_FOUND, "Comment not found");
+        }
+
+        return this.commentService.updateComment(comment, commentToUpdate);
     }
 }
