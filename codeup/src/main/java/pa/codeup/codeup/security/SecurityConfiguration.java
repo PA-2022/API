@@ -77,4 +77,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
     }
-}//http://localhost:4200", "*", "http://codeup-pa.herokuapp.com", "/*", "/**", "http://codeup-pa.herokuapp.com/**", "http://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com", "https://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com/*
+}
