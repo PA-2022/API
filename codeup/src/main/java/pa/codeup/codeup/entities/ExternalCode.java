@@ -2,11 +2,11 @@ package pa.codeup.codeup.entities;
 
 public class ExternalCode {
     private String code;
-    private String langage;
+    private String language;
 
-    public ExternalCode(String code, String langage) {
+    public ExternalCode(String code, String language) {
         this.code = code;
-        this.langage = langage;
+        this.language = language;
     }
 
     public String getCode() {
@@ -18,10 +18,10 @@ public class ExternalCode {
     }
 
     public String getLanguage() {
-        return langage;
+        return language;
     }
 
-    public void setLanguage(String langage) {
-        this.langage = langage;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

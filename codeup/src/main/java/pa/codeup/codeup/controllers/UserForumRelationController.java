@@ -1,14 +1,15 @@
 package pa.codeup.codeup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.Forum;
-import pa.codeup.codeup.dto.User;
-import pa.codeup.codeup.dto.UserForumRelation;
-import pa.codeup.codeup.repositories.ForumRepository;
-import pa.codeup.codeup.repositories.UserForumRelationRepository;
+import pa.codeup.codeup.dto.UserDao;
+import pa.codeup.codeup.dto.UserForumRelationDao;
+import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.entities.UserForumRelation;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.UserForumRelationService;
 
 import java.util.List;
 
@@ -19,71 +20,59 @@ import static org.springframework.http.HttpStatus.*;
 public class UserForumRelationController {
 
     private final AuthService authService;
-    private final ForumRepository forumRepository;
-    private final UserForumRelationRepository userForumRelationRepository;
+    private final UserForumRelationService userForumRelationService;
 
     @Autowired
-    public UserForumRelationController(AuthService authService, ForumRepository forumRepository,
-                                       UserForumRelationRepository userForumRelationRepository) {
+    public UserForumRelationController(AuthService authService, UserForumRelationService userForumRelationService) {
         this.authService = authService;
-        this.forumRepository = forumRepository;
-        this.userForumRelationRepository = userForumRelationRepository;
+        this.userForumRelationService = userForumRelationService;
     }
 
     @GetMapping("/forum/{forumId}")
-    public UserForumRelation getRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+    public ResponseEntity<UserForumRelation> getRelation(@PathVariable Long forumId) {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
 
-        UserForumRelation userForumRelation = this.userForumRelationRepository.getByUserIdAndForumId(currentUser.getId(), forumId);
+        UserForumRelation userForumRelation = this.userForumRelationService.getByUserIdAndForumId(currentUser.getId(), forumId);
         if (userForumRelation == null) {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find forum");
         }
 
-        return userForumRelation;
+        return new ResponseEntity<>(userForumRelation, OK);
     }
 
     @PostMapping("/add/forum/{forumId}")
-    public UserForumRelation addRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+    public ResponseEntity<UserForumRelation> addRelation(@PathVariable Long forumId) {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
-        Forum forum = this.forumRepository.getForumById(forumId);
-        if (forum == null) {
-            throw new ResponseStatusException(NO_CONTENT, "Unable to find forum");
-        }
-        UserForumRelation userForumRelation = new UserForumRelation();
-        userForumRelation.setUserId(currentUser.getId());
-        userForumRelation.setForumId(forum.getId());
-        return this.userForumRelationRepository.save(userForumRelation);
+
+        return new ResponseEntity<>(this.userForumRelationService.addRelation(forumId, currentUser), OK);
     }
 
     @DeleteMapping("/delete/forum/{forumId}")
     public boolean deleteRelation(@PathVariable Long forumId) {
-        User currentUser = authService.getAuthUser();
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
-
-        UserForumRelation userForumRelation = this.userForumRelationRepository.getByUserIdAndForumId(currentUser.getId(), forumId);
-        if (userForumRelation == null) {
+        if(!this.userForumRelationService.deleteRelation(forumId, currentUser.getId())) {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find forum");
         }
 
-        this.userForumRelationRepository.delete(userForumRelation);
         return true;
     }
 
     @GetMapping("/all-by-logged-user")
-    public List<UserForumRelation> getAllByLoggedUser() {
-        User currentUser = authService.getAuthUser();
+    public ResponseEntity<List<UserForumRelationDao>> getAllByLoggedUser() {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User not connected");
         }
 
-        return this.userForumRelationRepository.getAllByUserId(currentUser.getId());
+        return new ResponseEntity<>(this.userForumRelationService.getAllByUserId(currentUser.getId()), OK);
     }
 }

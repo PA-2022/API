@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pa.codeup.codeup.entities.CustomUserDetails;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.repositories.UserRepository;
 
 public class CustomUserDetailsService implements UserDetailsService {
@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepo.findByEmail(username);
+		UserDao user = userRepo.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}

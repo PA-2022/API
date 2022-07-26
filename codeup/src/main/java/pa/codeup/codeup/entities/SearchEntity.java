@@ -1,23 +1,20 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.Post;
-import pa.codeup.codeup.dto.User;
-
 import java.util.List;
 
 public class SearchEntity {
 
-    private final List<User> users;
+    private final List<UserIsFriend> users;
     private final List<PostWithUserAndForum> randomPosts;
     private final List<PostWithUserAndForum> subscribedSubredditsPosts;
 
-    public SearchEntity(List<User> users, List<PostWithUserAndForum> randomPosts, List<PostWithUserAndForum> subscribedSubredditsPosts) {
+    public SearchEntity(List<UserIsFriend> users, List<PostWithUserAndForum> randomPosts, List<PostWithUserAndForum> subscribedSubredditsPosts) {
         this.users = users;
         this.randomPosts = randomPosts;
         this.subscribedSubredditsPosts = subscribedSubredditsPosts;
     }
 
-    public List<User> getUsers() {
+    public List<UserIsFriend> getUsers() {
         return users;
     }
 

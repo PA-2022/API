@@ -4,20 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
+import pa.codeup.codeup.entities.User;
+import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 
 @Service
 public class AuthService {
 
-    private UserRepository userRepository;
-
+    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
     @Autowired
-    public AuthService(UserRepository userRepository){
+    public AuthService(UserRepository userRepository, AuthRepository authRepository){
         this.userRepository = userRepository;
+        this.authRepository = authRepository;
     }
 
-    public User getAuthUser() {
+    public UserDao getAuthUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String username;
@@ -27,5 +30,13 @@ public class AuthService {
             username = principal.toString();
         }
         return this.userRepository.findByUsername(username);
+    }
+
+    public String hasRight() {
+        UserDao loggedUser = this.getAuthUser();
+        if(loggedUser == null){
+            return null;
+        }
+        return this.authRepository.getByUsername(loggedUser.getUsername()).getAuthority();
     }
 }
