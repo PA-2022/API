@@ -1,14 +1,17 @@
 package pa.codeup.codeup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.PostVote;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.PostVoteDao;
+import pa.codeup.codeup.dto.UserDao;
+import pa.codeup.codeup.entities.PostVote;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.PostVoteService;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -25,32 +28,39 @@ public class PostVoteController {
     }
 
     @GetMapping("/post/{id}")
-    public Optional<PostVote> getUserVoteForPost(@PathVariable Long id) {
-        User currentUser = authService.getAuthUser();
+    public ResponseEntity<PostVote> getUserVoteForPost(@PathVariable @Valid Long id) {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        return this.postVoteService.getCommentVoteByCommentIdAndUserId(id, currentUser.getId());
+        PostVoteDao postVoteDao = this.postVoteService.getPostVoteByPostIdAndUserId(id, currentUser.getId()).orElse(null);
+        if(postVoteDao == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(postVoteDao.toEntity(), HttpStatus.OK);
     }
 
     @PutMapping()
-    public PostVote putUserVoteForPost(@RequestBody PostVote postVote) {
-        User currentUser = authService.getAuthUser();
+    public ResponseEntity<PostVote> putUserVoteForPost(@RequestBody @Valid PostVote postVote) {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        postVote.setUserId(currentUser.getId());
-        return this.postVoteService.saveAndFlush(postVote);
+        PostVote pv = this.postVoteService.putPostVote(postVote, currentUser);
+        if(pv == null) {
+            new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(pv, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public boolean deleteVoteForPost(@RequestBody PostVote postVote) {
-        User currentUser = authService.getAuthUser();
+    public boolean deleteVoteForPost(@RequestBody @Valid PostVote postVote) {
+        UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         postVote.setUserId(currentUser.getId());
-        this.postVoteService.delete(postVote);
+        this.postVoteService.delete(postVote.createDao());
         return true;
     }
 }

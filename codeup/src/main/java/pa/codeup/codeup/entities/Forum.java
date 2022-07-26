@@ -1,39 +1,31 @@
-package pa.codeup.codeup.dto;
+package pa.codeup.codeup.entities;
 
-import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import pa.codeup.codeup.dto.ForumDao;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
-@Table(name = "forum")
-public class 	Forum {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Forum {
 	private Long id;
-
 	@NotNull
-	@Column(name = "title", nullable = false, unique = true ,length = 128)
 	private String title;
-
 	@NotNull
-	@Column(name = "description", nullable = false, columnDefinition="TEXT")
 	private String description;
-
-	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date")
 	private Date creationDate;
-
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_update_date")
 	private Date lastUpdateDate;
-
-	@Column(name = "color")
 	private String color;
+
+	public Forum(Long id, String title, String description, Date creationDate, Date lastUpdateDate, String color) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.color = color != null ? color : "#ffffff";
+	}
 
 	public Long getId() {
 		return id;
@@ -63,16 +55,16 @@ public class 	Forum {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date createDate) {
-		this.creationDate = createDate;
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public Date getLastUpdateDate() {
 		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(Date modifyDate) {
-		this.lastUpdateDate = modifyDate;
+	public void setLastUpdateDate(Date lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
 	}
 
 	public String getColor() {
@@ -81,5 +73,16 @@ public class 	Forum {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public ForumDao createDao() {
+		ForumDao dao = new ForumDao();
+		dao.setColor(this.color);
+		dao.setCreationDate(this.creationDate);
+		dao.setLastUpdateDate(this.lastUpdateDate);
+		dao.setDescription(this.description);
+		dao.setTitle(this.title);
+		dao.setId(this.id);
+		return dao;
 	}
 }

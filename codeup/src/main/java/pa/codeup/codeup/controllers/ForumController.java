@@ -2,36 +2,50 @@ package pa.codeup.codeup.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pa.codeup.codeup.dto.Forum;
-import pa.codeup.codeup.repositories.ForumRepository;
+import org.springframework.web.server.ResponseStatusException;
+import pa.codeup.codeup.dto.AuthEntity;
+import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.ForumService;
 
+import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/forums")
 public class ForumController {
 
-    private final ForumRepository forumRepository;
+    private final ForumService forumService;
+    private final AuthService authService;
 
     @Autowired
-    public ForumController(ForumRepository forumRepository) {
-        this.forumRepository = forumRepository;
+    public ForumController(ForumService forumService, AuthService authService) {
+        this.forumService = forumService;
+        this.authService = authService;
     }
 
     @GetMapping("/{id}")
-    public Forum getForum(@PathVariable Long id) {
-        return forumRepository.getForumById(id);
+    public ResponseEntity<Forum> getForum(@PathVariable @Valid Long id) {
+        return new ResponseEntity<>(this.forumService.getForumById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public Long createForum(@RequestBody Forum forum) {
-        return forumRepository.save(forum).getId();
+    public ResponseEntity<Long> createForum(@RequestBody @Valid Forum forum) {
+        String rights = this.authService.hasRight();
+        if(rights != null && rights.equals("ADMIN")) {
+            return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/all/limit/{limit}/offset/{offset}")
-    public List<Forum> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
-        return forumRepository.findByOrderByIdDesc(PageRequest.of(offset, limit));
+    public ResponseEntity<List<Forum>> getAllWithLimit(@PathVariable int limit, @PathVariable int offset) {
+        return new ResponseEntity<>(this.forumService.findByOrderByIdDesc(offset, limit), HttpStatus.OK);
     }
 }

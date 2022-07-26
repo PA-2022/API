@@ -1,4 +1,4 @@
-package pa.codeup.codeup.entities;
+package pa.codeup.codeup.dto;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,7 +13,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = true)
@@ -112,4 +112,5 @@ public class Comment {
     public void setNote(int note) {
         this.note = note;
     }
+
 }

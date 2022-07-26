@@ -1,10 +1,12 @@
 package pa.codeup.codeup.dto;
 
+import pa.codeup.codeup.entities.User;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserDao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +29,36 @@ public class User {
 
 	@Column(name = "enabled")
 	private boolean enabled = true;
+
+	@Column(name = "profile_picture_url")
+	private String profilePictureUrl;
+
+	@Column(name = "profile_picture_name")
+	private String profilePictureName;
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+	public void setProfilePictureName(String profilePictureName) {
+		this.profilePictureName = profilePictureName;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
 
 	public Long getId() {
 		return id;
@@ -74,5 +106,9 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public User toEntity() {
+		return new User(this.id, this.email, this.password, this.username, this.firstname, this.lastname, this.enabled, this.profilePictureUrl, this.profilePictureName);
 	}
 }

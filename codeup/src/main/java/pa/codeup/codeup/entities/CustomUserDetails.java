@@ -2,15 +2,15 @@ package pa.codeup.codeup.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pa.codeup.codeup.dto.User;
+import pa.codeup.codeup.dto.UserDao;
 
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-	private User user;
+	private UserDao user;
 	
-	public CustomUserDetails(User user) {
+	public CustomUserDetails(UserDao user) {
 		this.user = user;
 	}
 
