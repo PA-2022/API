@@ -33,8 +33,15 @@ class UserTest {
     }
 
     @Test
-    void addSameUser() throws Exception {
-        Assertions.assertThrows(Exception.class, (Executable) userService.addUser(user));
+    void addSameUser() {
+        try {
+            Exception ex = Assertions.assertThrows(Exception.class, (Executable) userService.addUser(user));
+            Assertions.assertEquals(ex.toString(), "java.lang.Exception: User already exists");
+
+        } catch (Exception e) {
+            Assertions.assertEquals(e.toString(), "java.lang.Exception: " +
+                    "User already exists");
+        }
     }
 
     void incrementsUser() {
