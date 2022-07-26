@@ -71,10 +71,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 HttpMethod.DELETE.name()
         ));
         configuration.setAllowCredentials(true);
-        String[] origins = {"http://localhost:4200", "*", "http://codeup-pa.herokuapp.com", "/*", "/**", "http://codeup-pa.herokuapp.com/**", "http://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com", "https://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com/**"};
+        String[] origins = {"*"};
         configuration.setAllowedOrigins(new ArrayList<>(Arrays.asList(origins)));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
     }
-}
+}//http://localhost:4200", "*", "http://codeup-pa.herokuapp.com", "/*", "/**", "http://codeup-pa.herokuapp.com/**", "http://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com", "https://codeup-pa.herokuapp.com/*", "https://codeup-pa.herokuapp.com/*
