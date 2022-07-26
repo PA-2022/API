@@ -37,11 +37,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> processRegister(@RequestBody @Valid User user) {
-        if(this.userRepo.findAllByUsernameLike(user.getUsername()).size() > 0 &&
-                this.userRepo.findAllByEmailLike(user.getEmail()).size() > 0) {
+        try {
+            return new ResponseEntity<>(this.userService.addUser(user), OK);
+        }catch (Exception e) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User exists");
+
         }
-        return new ResponseEntity<>(this.userService.addUser(user), OK);
     }
 
     @GetMapping("/users")

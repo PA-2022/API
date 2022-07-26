@@ -204,12 +204,14 @@ public class UserService {
 
     }
 
-    public User addUser(User user) {
+    public User addUser(User user) throws Exception {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
-
+        if(this.findAllByUsernameLike(user.getUsername()).size() > 0 || this.findAllByEmailLike(user.getEmail()).size() > 0){
+            throw new Exception("User already exists");
+        }
         UserDao userDao = this.userRepository.save(user.createDao());
         this.authRepository.save(new AuthEntity(user.getUsername(), "ROLE_USER"));
         return userDao.toEntity();
