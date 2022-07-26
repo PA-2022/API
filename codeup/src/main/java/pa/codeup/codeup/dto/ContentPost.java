@@ -25,6 +25,9 @@ public class ContentPost {
     @Column(name ="position")
     private Long position;
 
+    @Column(name="language")
+    private String language;
+
 
     public Long getId() {
         return this.id;
@@ -73,7 +76,15 @@ public class ContentPost {
     public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
-    
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public String toString() {
         return "ContentPost{" +
                 "id=" + id +
