@@ -70,7 +70,7 @@ public class UserService {
 
     public boolean sendPasswordChangeEmail(UserDao user) {
         String token = passwordChangeTokenCreation(user.getUsername(), user.getId());
-        String frontUrl = "http://localhost:4200/change-password/" + token;
+        String frontUrl = "http://codeup-pa.herokuapp.com/change-password/" + token;
         String emailContent = "<table style=\"max-width: 670px; background: #fff; border-radius: 3px; text-align: center; -webkit-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); -moz-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); box-shadow: 0 6px 18px 0 rgba(0,0,0,.06);\" border=\"0\" width=\"95%\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
                 "<tbody>\n" +
                 "<tr>\n" +
@@ -204,12 +204,14 @@ public class UserService {
 
     }
 
-    public User addUser(User user) {
+    public User addUser(User user) throws Exception {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
-
+        if(this.findAllByUsernameLike(user.getUsername()).size() > 0 || this.findAllByEmailLike(user.getEmail()).size() > 0){
+            throw new Exception("User already exists");
+        }
         UserDao userDao = this.userRepository.save(user.createDao());
         this.authRepository.save(new AuthEntity(user.getUsername(), "ROLE_USER"));
         return userDao.toEntity();

@@ -37,11 +37,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> processRegister(@RequestBody @Valid User user) {
-        if(this.userRepo.findAllByUsernameLike(user.getUsername()).size() > 0 &&
-                this.userRepo.findAllByEmailLike(user.getEmail()).size() > 0) {
+        try {
+            return new ResponseEntity<>(this.userService.addUser(user), OK);
+        }catch (Exception e) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User exists");
+
         }
-        return new ResponseEntity<>(this.userService.addUser(user), OK);
     }
 
     @GetMapping("/users")
@@ -77,7 +78,7 @@ public class UserController {
 
     @GetMapping("/test")
     public String test() {
-        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs sympa c'est ici :)" +
+        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs c'est ici hihihi" +
                 "<br>" +
                 "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
     }
