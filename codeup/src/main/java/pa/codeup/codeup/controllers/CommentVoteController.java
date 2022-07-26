@@ -11,6 +11,11 @@ import pa.codeup.codeup.entities.CommentVote;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.CommentVoteService;
 
+import javax.validation.Valid;
+
+import java.security.spec.ECField;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
@@ -26,7 +31,7 @@ public class CommentVoteController {
     }
 
     @GetMapping("/comment/{id}")
-    public ResponseEntity<CommentVote> getUserVoteForComment(@PathVariable Long id) {
+    public ResponseEntity<CommentVote> getUserVoteForComment(@PathVariable @Valid Long id) {
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -39,21 +44,26 @@ public class CommentVoteController {
     }
 
     @PutMapping()
-    public ResponseEntity<CommentVote> putUserVoteForComment(@RequestBody CommentVote commentVote) {
+    public ResponseEntity<CommentVote> putUserVoteForComment(@RequestBody @Valid CommentVote commentVote) {
 
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
-        CommentVote cv = this.commentVoteService.putCommentVote(commentVote, currentUser);
-        if(cv == null) {
-             new ResponseEntity<>(HttpStatus.OK);
+        try{
+            CommentVote cv = this.commentVoteService.putCommentVote(commentVote, currentUser);
+            if(cv == null) {
+                new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(cv, HttpStatus.OK);
+        } catch (Exception e){
+            throw new ResponseStatusException(NOT_FOUND, "Comment not found");
         }
-        return new ResponseEntity<>(cv, HttpStatus.OK);
+
     }
 
     @DeleteMapping
-    public boolean deleteVoteForComment(@RequestBody CommentVoteDao commentVoteDao) {
+    public boolean deleteVoteForComment(@RequestBody @Valid CommentVoteDao commentVoteDao) {
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");

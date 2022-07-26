@@ -3,13 +3,15 @@ package pa.codeup.codeup.entities;
 import pa.codeup.codeup.dto.Post;
 import pa.codeup.codeup.dto.PostVoteDao;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 public class PostVote {
 	private Long id;
+	@NotNull
 	private boolean upvote;
 	private Long userId;
-	private Long postId;
+	@NotNull
+	Long postId;
 
 	public PostVote(Long id, boolean upvote, Long userId, Long postId) {
 		this.id = id;

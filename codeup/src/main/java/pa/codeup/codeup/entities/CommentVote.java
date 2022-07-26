@@ -2,15 +2,15 @@ package pa.codeup.codeup.entities;
 
 import pa.codeup.codeup.dto.CommentVoteDao;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
 
 public class CommentVote {
     private Long id;
+    @NotNull
     private boolean upvote;
     private Long userId;
+    @NotNull
     private Long commentId;
 
     public CommentVote(Long id, boolean upvote, Long userId, Long commentId) {
