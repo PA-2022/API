@@ -2,16 +2,25 @@ package pa.codeup.codeup.entities;
 
 import pa.codeup.codeup.dto.UserDao;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 public class User {
 
 	private Long id;
+	@NotNull
 	private String email;
+	@NotNull
 	private String password;
+	@NotNull
 	private String username;
+	@NotNull
 	private String firstname;
+	@NotNull
 	private String lastname;
-	private boolean enabled = true;
+	private boolean enabled;
 	private String profilePictureUrl;
 	private String profilePictureName;
 
@@ -22,7 +31,7 @@ public class User {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.enabled = enabled;
+		this.enabled = true;
 		this.profilePictureUrl = profilePictureUrl;
 		this.profilePictureName = profilePictureName;
 	}

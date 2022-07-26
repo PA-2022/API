@@ -109,6 +109,6 @@ public class UserDao {
 	}
 
 	public User toEntity() {
-		return new User(this.id, this.email, "", this.username, this.firstname, this.lastname, this.enabled, this.profilePictureUrl, this.profilePictureName);
+		return new User(this.id, this.email, this.password, this.username, this.firstname, this.lastname, this.enabled, this.profilePictureUrl, this.profilePictureName);
 	}
 }

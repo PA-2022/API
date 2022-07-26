@@ -185,7 +185,7 @@ public class UserService {
         return url;
     }
 
-    public User updateUser(UserDao updatedUser) {
+    public User updateUser(User updatedUser) {
         UserDao userDto = this.userRepository.getUserById(updatedUser.getId());
         AuthEntity authEntity = this.authRepository.getByUsername(userDto.getUsername());
 
@@ -194,7 +194,7 @@ public class UserService {
         userDto.setFirstname(updatedUser.getFirstname());
         userDto.setLastname(updatedUser.getLastname());
         this.userRepository.saveAndFlush(userDto);
-        AuthEntity au = new AuthEntity(userDto.getUsername(), "ROLE_USER");
+        AuthEntity au = new AuthEntity(userDto.getUsername(), authEntity.getAuthority());
 
         this.authRepository.delete(authEntity);
         this.authRepository.save(au);
@@ -204,13 +204,13 @@ public class UserService {
 
     }
 
-    public User addUser(UserDao user) {
+    public User addUser(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
 
-        UserDao userDao = this.userRepository.save(user);
+        UserDao userDao = this.userRepository.save(user.createDao());
         this.authRepository.save(new AuthEntity(user.getUsername(), "ROLE_USER"));
         return userDao.toEntity();
     }
