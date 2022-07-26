@@ -64,7 +64,7 @@ public class PostController {
     @GetMapping("/{postId}/content")
     public List<ContentPost> getContentById(@PathVariable Long postId){
         
-        List<ContentPost> contentPosts = this.contentPostRepository.findAllByPostId(postId);
+        List<ContentPost> contentPosts = this.contentPostRepository.findAllByPostIdOrderByPosition(postId);
         if(contentPosts == null) {
             throw new ResponseStatusException(NO_CONTENT, "Unable to find post");
         }

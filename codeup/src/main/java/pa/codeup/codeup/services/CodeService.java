@@ -23,20 +23,20 @@ public class CodeService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public String executeJs(String code) throws ScriptException {
+    // public String executeJs(String code) throws ScriptException {
 
-        StringWriter scriptOutput = new StringWriter();
+    //     StringWriter scriptOutput = new StringWriter();
 
-        ScriptEngine graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
-        graalEngine.getContext().setWriter(scriptOutput);
+    //     ScriptEngine graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
+    //     graalEngine.getContext().setWriter(scriptOutput);
 
-        graalEngine.eval(code);
-        return scriptOutput.toString();
+    //     graalEngine.eval(code);
+    //     return scriptOutput.toString();
 
-    }
+    // }
 
-    public Object executePython(ExternalCode code){
-        String url = "http://localhost:8090/codeEditor";
+    public Object executeCode(ExternalCode code){
+        String url = "http://46.105.14.4:8099/codeEditor";
         ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, code, Object.class);
         Object responseBody = responseEntity.getBody();
         Object response = restTemplate.postForObject(url, code, ResponseOutputDAO.class);

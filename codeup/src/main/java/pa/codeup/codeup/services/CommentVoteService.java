@@ -44,9 +44,13 @@ public class CommentVoteService {
         this.commentRepository.saveAndFlush(comment);
     }
 
-    public CommentVote putCommentVote(CommentVote commentVote, UserDao currentUser) {
+    public CommentVote putCommentVote(CommentVote commentVote, UserDao currentUser) throws Exception {
         commentVote.setUserId(currentUser.getId());
         CommentVoteDao exists = this.getCommentVoteByCommentIdAndUserId(commentVote.getCommentId(), currentUser.getId()).orElse(null);
+        Comment comment = this.commentRepository.findById(commentVote.getCommentId()).orElse(null);
+        if(comment == null){
+            throw new Exception("Comment not found");
+        }
         if(exists == null) {
             return this.saveAndFlush(commentVote.createDao()).toEntity();
         }

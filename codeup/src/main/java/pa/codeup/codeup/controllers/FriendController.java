@@ -11,6 +11,7 @@ import pa.codeup.codeup.entities.UserAndFriend;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.FriendService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
@@ -33,7 +34,7 @@ public class FriendController {
 
     @PostMapping("/add-friend/{friendId}")
     @ResponseBody
-    public ResponseEntity<Friend> executeCode(@PathVariable Long friendId) {
+    public ResponseEntity<Friend> addFriend(@PathVariable @Valid Long friendId) {
         UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -48,7 +49,7 @@ public class FriendController {
 
     @PostMapping("accept-friend/{friendId}")
     @ResponseBody
-    public ResponseEntity<Friend> acceptFriend(@PathVariable Long friendId){
+    public ResponseEntity<Friend> acceptFriend(@PathVariable @Valid Long friendId){
         UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -63,7 +64,7 @@ public class FriendController {
 
     @DeleteMapping("delete-friend/{friendId}")
     @ResponseBody
-    public ResponseEntity<String> deleteFriend(@PathVariable Long friendId){
+    public ResponseEntity<String> deleteFriend(@PathVariable @Valid Long friendId){
         UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -77,7 +78,7 @@ public class FriendController {
     }
 
     @GetMapping("is-friend/{friendId}")
-    public ResponseEntity<Friend> getIsFriend(@PathVariable Long friendId){
+    public ResponseEntity<Friend> getIsFriend(@PathVariable @Valid Long friendId){
         UserDao user = this.authService.getAuthUser();
         if(user == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -90,7 +91,7 @@ public class FriendController {
     }
 
     @GetMapping("list/{userId}")
-    public ResponseEntity<List<UserAndFriend>> getFriendList(@PathVariable Long userId) {
+    public ResponseEntity<List<UserAndFriend>> getFriendList(@PathVariable @Valid Long userId) {
         try {
             return new ResponseEntity<>( this.friendService.getList(userId), HttpStatus.OK);
         } catch (Exception e) {

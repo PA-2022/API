@@ -10,11 +10,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.User;
-import pa.codeup.codeup.repositories.AuthRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.UserService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> processRegister(@RequestBody UserDao user) {
+    public ResponseEntity<User> processRegister(@RequestBody @Valid User user) {
         if(this.userRepo.findAllByUsernameLike(user.getUsername()).size() > 0 &&
                 this.userRepo.findAllByEmailLike(user.getEmail()).size() > 0) {
             throw new ResponseStatusException(NOT_ACCEPTABLE, "User exists");
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<User> getUser(@PathVariable @Valid Long id) {
         User user = this.userService.getUserById(id);
 
         if(user == null) {
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDao updatedUser) {
+    public ResponseEntity<User> updateUser(@PathVariable @Valid Long id, @RequestBody @Valid User updatedUser) {
         User toUpdate = this.userService.getUserById(id);
         UserDao loggedUser = this.authService.getAuthUser();
         if(loggedUser == null || !toUpdate.getId().equals(loggedUser.getId())){
@@ -77,17 +77,17 @@ public class UserController {
 
     @GetMapping("/test")
     public String test() {
-        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs sympa c'est ici :)" +
+        return "<p>Bonjour c'est le endpoint de test JEE si vous voulez faire des modifs c'est ici (plz)" +
                 "<br>" +
                 "<img src=\"https://en.meming.world/images/en/4/4a/Modern_Problems_Require_Modern_Solutions.jpg\" alt=\"\" /></p>";
     }
 
     @GetMapping("/username-exists/{username}")
-    public boolean usernameExists(@PathVariable String username) {
+    public boolean usernameExists(@PathVariable @Valid String username) {
         return this.userService.findAllByUsernameLike(username).size() > 0;
     }
     @GetMapping("/email-exists/{email}")
-    public boolean emailExists(@PathVariable String email) {
+    public boolean emailExists(@PathVariable @Valid String email) {
         return this.userService.findAllByEmailLike(email).size() > 0;
     }
     @PostMapping("/send-password-edit")
@@ -99,7 +99,7 @@ public class UserController {
         return this.userService.sendPasswordChangeEmail(user);
     }
     @PostMapping("/change-password/{password}/token/{token}")
-    public boolean changePassword(@PathVariable String password, @PathVariable String token) {
+    public boolean changePassword(@PathVariable @Valid String password, @PathVariable @Valid String token) {
         boolean isOK = this.userService.changePassword(password, token);
         if(!isOK) {
             throw new ResponseStatusException(UNAUTHORIZED, "bad token");
@@ -108,12 +108,12 @@ public class UserController {
     }
 
     @GetMapping("/token/{token}")
-    public boolean isTokenActive(@PathVariable String token) {
+    public boolean isTokenActive(@PathVariable @Valid String token) {
         return this.userService.isTokenActive(token);
     }
 
     @PostMapping("/lost-password/{email}")
-    public boolean userLostPassword(@PathVariable String email) {
+    public boolean userLostPassword(@PathVariable @Valid String email) {
         return this.userService.emailUserLostPassword(email);
     }
 

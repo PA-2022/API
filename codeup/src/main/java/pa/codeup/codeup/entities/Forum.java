@@ -1,16 +1,18 @@
 package pa.codeup.codeup.entities;
 
-import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import pa.codeup.codeup.dto.ForumDao;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Forum {
 	private Long id;
+	@NotNull
 	private String title;
+	@NotNull
 	private String description;
 	private Date creationDate;
 	private Date lastUpdateDate;
@@ -22,7 +24,7 @@ public class Forum {
 		this.description = description;
 		this.creationDate = creationDate;
 		this.lastUpdateDate = lastUpdateDate;
-		this.color = color;
+		this.color = color != null ? color : "#ffffff";
 	}
 
 	public Long getId() {

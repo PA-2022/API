@@ -4,14 +4,19 @@ package pa.codeup.codeup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.UserDao;
+
 import pa.codeup.codeup.dto.Comment;
+import pa.codeup.codeup.dto.CommentContent;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.CommentWithUser;
 import pa.codeup.codeup.entities.PostComment;
+import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.CommentRepository;
 import pa.codeup.codeup.repositories.CommentVoteRepository;
+import pa.codeup.codeup.repositories.ContentPostRepository;
 import pa.codeup.codeup.repositories.UserRepository;
 import pa.codeup.codeup.services.AuthService;
+import pa.codeup.codeup.services.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +31,17 @@ public class CommentController {
     private final AuthService authService;
     private final UserRepository userRepository;
     private final CommentVoteRepository commentVoteRepository;
+    private final CommentService commentService;
+    private final ContentPostRepository contentPostRepository;
 
     @Autowired
-    public CommentController(CommentRepository commentRepository, AuthService authService, UserRepository userRepository, CommentVoteRepository commentVoteRepository) {
+    public CommentController(CommentRepository commentRepository, AuthService authService, UserRepository userRepository, CommentVoteRepository commentVoteRepository, CommentService commentService, ContentPostRepository contentPostRepository) {
         this.commentRepository = commentRepository;
         this.authService = authService;
         this.userRepository = userRepository;
         this.commentVoteRepository = commentVoteRepository;
+        this.commentService = commentService;
+        this.contentPostRepository = contentPostRepository;
     }
 
     @GetMapping("/{id}")
@@ -47,23 +56,25 @@ public class CommentController {
     public PostComment getCommentPost(@PathVariable Long id) {
 
         Comment comment = commentRepository.getCommentById(id);
-        UserDao currentUser = authService.getAuthUser();
+        User currentUser = authService.getAuthUser().toEntity();
         List<CommentWithUser> responses = new ArrayList<>();
+
         this.commentRepository.getAllByCommentParentId(comment.getId()).forEach(simpleResponse -> {
-            responses.add(new CommentWithUser(simpleResponse, this.userRepository.getUserById(simpleResponse.getUserId()), currentUser != null
-                    ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(simpleResponse.getId(), currentUser.getId()) : null));
+            responses.add(
+                new CommentWithUser(simpleResponse, this.userRepository.getUserById(simpleResponse.getUserId()).toEntity(), currentUser != null
+                    ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(simpleResponse.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByCommentIdOrderByPosition(simpleResponse.getId()) ));
         });
 
-        return new PostComment(new CommentWithUser(comment, this.userRepository.getUserById(comment.getUserId()),
-                currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null), responses);
+        return new PostComment(new CommentWithUser(comment, this.userRepository.getUserById(comment.getUserId()).toEntity(),
+                currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByPostIdOrderByPosition(comment.getId())), responses);
     }
 
 
     @PostMapping
     @ResponseBody
-    public Long addComment(@RequestBody Comment comment) {
-        comment.setUserId(this.authService.getAuthUser().getId());
-        return commentRepository.save(comment).getId();
+    public Comment addComment(@RequestBody CommentContent commentContent) {
+        commentContent.getComment().setUserId(this.authService.getAuthUser().getId());
+        return this.commentService.addContentAndComment(commentContent.getComment(), commentContent.getContentPost());
     }
 
     @GetMapping("/comment/post/{postId}")
@@ -75,10 +86,10 @@ public class CommentController {
         comments.forEach(comment -> {
             List<CommentWithUser> responses = new ArrayList<>();
             this.commentRepository.getAllByCommentParentId(comment.getId()).forEach(simpleResponse -> {
-                responses.add(new CommentWithUser(simpleResponse, this.userRepository.getUserById(simpleResponse.getUserId()), currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(simpleResponse.getId(), currentUser.getId()) : null));
+                responses.add(new CommentWithUser(simpleResponse, this.userRepository.getUserById(simpleResponse.getUserId()).toEntity(), currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(simpleResponse.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByCommentIdOrderByPosition(simpleResponse.getId()) ));
             });
 
-            postComments.add(new PostComment(new CommentWithUser(comment, this.userRepository.getUserById(comment.getUserId()), currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null), responses));
+            postComments.add(new PostComment(new CommentWithUser(comment, this.userRepository.getUserById(comment.getUserId()).toEntity(), currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByCommentIdOrderByPosition(comment.getId())), responses));
         });
 
         return postComments;

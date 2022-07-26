@@ -16,11 +16,17 @@ public class ContentPost {
     @Column(name ="post_id")
     private Long postId;
 
+    @Column(name ="comment_id")
+    private Long commentId;
+
     @Column(name = "type")
     private int type;
     
     @Column(name ="position")
     private Long position;
+
+    @Column(name="language")
+    private String language;
 
 
     public Long getId() {
@@ -62,7 +68,23 @@ public class ContentPost {
     public void setType(int type) {
         this.type = type;
     }
-    
+
+    public Long getCommentId() {
+        return this.commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public String toString() {
         return "ContentPost{" +
                 "id=" + id +

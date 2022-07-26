@@ -5,16 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pa.codeup.codeup.dto.CommentVoteDao;
-import pa.codeup.codeup.dto.Post;
 import pa.codeup.codeup.dto.PostVoteDao;
 import pa.codeup.codeup.dto.UserDao;
-import pa.codeup.codeup.entities.CommentVote;
 import pa.codeup.codeup.entities.PostVote;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.PostVoteService;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -31,7 +28,7 @@ public class PostVoteController {
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<PostVote> getUserVoteForPost(@PathVariable Long id) {
+    public ResponseEntity<PostVote> getUserVoteForPost(@PathVariable @Valid Long id) {
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
@@ -44,20 +41,20 @@ public class PostVoteController {
     }
 
     @PutMapping()
-    public ResponseEntity<PostVote> putUserVoteForPost(@RequestBody PostVote postVote) {
+    public ResponseEntity<PostVote> putUserVoteForPost(@RequestBody @Valid PostVote postVote) {
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");
         }
         PostVote pv = this.postVoteService.putPostVote(postVote, currentUser);
         if(pv == null) {
-            new ResponseEntity<>(HttpStatus.OK);
+            new ResponseEntity<>(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(pv, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public boolean deleteVoteForPost(@RequestBody PostVote postVote) {
+    public boolean deleteVoteForPost(@RequestBody @Valid PostVote postVote) {
         UserDao currentUser = authService.getAuthUser();
         if (currentUser == null) {
             throw new ResponseStatusException(UNAUTHORIZED, "User not connected");

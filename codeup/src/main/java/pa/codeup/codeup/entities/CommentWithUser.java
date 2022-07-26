@@ -1,29 +1,36 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.Comment;
-import pa.codeup.codeup.dto.CommentVoteDao;
-import pa.codeup.codeup.dto.UserDao;
 
+import pa.codeup.codeup.dto.*;
+
+import java.util.List;
 import java.util.Optional;
 
-public class CommentWithUser {
-    private Comment comment;
-    private UserDao user;
-    private Optional<CommentVoteDao> commentVote;
 
-    public CommentWithUser(Comment comment, UserDao user, Optional<CommentVoteDao> commentVote) {
+public class CommentWithUser {
+    private final Comment comment;
+    private final User user;
+    private final Optional<CommentVoteDao> commentVote;
+    private final List<ContentPost> contents;
+    
+    public CommentWithUser(Comment comment, User user, Optional<CommentVoteDao> commentVote, List<ContentPost> contents) {
         this.comment = comment;
         this.user = user;
         this.commentVote = commentVote;
+        this.contents = contents;
     }
 
     public Comment getComment() {
         return comment;
     }
 
-    public UserDao getUser() {
+    public User getUser() {
         return user;
     }
 
     public Optional<CommentVoteDao> getOptionalCommentVote() { return commentVote; }
+
+    public List<ContentPost> getContents() {
+        return contents;
+    }
 }
