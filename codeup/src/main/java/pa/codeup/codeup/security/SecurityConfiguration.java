@@ -71,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 HttpMethod.DELETE.name()
         ));
         configuration.setAllowCredentials(true);
-        String[] origins = {"http://localhost:4200"};
+        String[] origins = {"http://localhost:4200", "https://codeup-7bf5f.web.app/", "*", "https://codeup-7bf5f.web.app/**"};
         configuration.setAllowedOrigins(new ArrayList<>(Arrays.asList(origins)));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
