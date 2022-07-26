@@ -11,6 +11,7 @@ import pa.codeup.codeup.entities.Forum;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.ForumService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -29,12 +30,12 @@ public class ForumController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Forum> getForum(@PathVariable Long id) {
+    public ResponseEntity<Forum> getForum(@PathVariable @Valid Long id) {
         return new ResponseEntity<>(this.forumService.getForumById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Long> createForum(@RequestBody Forum forum) {
+    public ResponseEntity<Long> createForum(@RequestBody @Valid Forum forum) {
         String rights = this.authService.hasRight();
         if(rights != null && rights.equals("ADMIN")) {
             return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
