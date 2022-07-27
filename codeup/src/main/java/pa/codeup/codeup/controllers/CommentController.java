@@ -68,7 +68,7 @@ public class CommentController {
         });
 
         return new PostComment(new CommentWithUser(comment, this.userRepository.getUserById(comment.getUserId()).toEntity(),
-                currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByPostIdOrderByPosition(comment.getId())), responses);
+                currentUser != null ? this.commentVoteRepository.findCommentVoteByCommentIdAndUserId(comment.getId(), currentUser.getId()) : null, this.contentPostRepository.findAllByCommentIdOrderByPosition(comment.getId())), responses);
     }
 
 
