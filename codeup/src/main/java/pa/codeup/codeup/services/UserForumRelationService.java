@@ -24,7 +24,8 @@ public class UserForumRelationService {
     }
 
     public UserForumRelation getByUserIdAndForumId(Long id, Long forumId) {
-        return this.userForumRelationRepository.getByUserIdAndForumId(id, forumId).toEntity();
+        UserForumRelationDao dao = userForumRelationRepository.getByUserIdAndForumId(id, forumId);
+        return dao != null ? dao.toEntity() : null  ;
     }
 
     public UserForumRelation addRelation(Long forumId, UserDao currentUser) {
