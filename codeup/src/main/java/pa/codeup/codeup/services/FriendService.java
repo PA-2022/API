@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pa.codeup.codeup.dto.FriendDto;
 import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.Friend;
+import pa.codeup.codeup.entities.Notification;
+import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.entities.UserAndFriend;
 import pa.codeup.codeup.repositories.FriendRepository;
 import pa.codeup.codeup.repositories.UserRepository;
@@ -16,13 +18,15 @@ import java.util.Objects;
 @Service
 public class FriendService {
 
-    private FriendRepository friendRepository;
-    private UserRepository userRepository;
+    private final FriendRepository friendRepository;
+    private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Autowired
-    public FriendService(FriendRepository friendRepository, UserRepository userRepository){
+    public FriendService(FriendRepository friendRepository, UserRepository userRepository, NotificationService notificationService){
         this.friendRepository = friendRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public Friend addFriend(Long currentUserUd, Long friendId) throws Exception {
@@ -39,6 +43,10 @@ public class FriendService {
             existsFriend.setAccepted(true);
             return this.friendRepository.saveAndFlush(existsFriend).toEntity();
         }
+        User user = this.userRepository.getUserById(currentUserUd).toEntity();
+        String notificationTitle = "User " + user.getUsername() + " wants to be your friend";
+        String notificationUrl = "/account/" + friendId;
+        this.notificationService.insertNotification(new Notification(null, friendId, notificationTitle, notificationUrl, false));
         return this.friendRepository.save(new Friend(null, currentUserUd, friendId, false).toFriendDto()).toEntity();
     }
 

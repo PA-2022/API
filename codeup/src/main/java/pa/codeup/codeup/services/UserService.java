@@ -70,7 +70,7 @@ public class UserService {
 
     public boolean sendPasswordChangeEmail(UserDao user) {
         String token = passwordChangeTokenCreation(user.getUsername(), user.getId());
-        String frontUrl = "http://codeup-pa.herokuapp.com/change-password/" + token;
+        String frontUrl = "https://codeup-7bf5f.web.app/change-password/" + token;
         String emailContent = "<table style=\"max-width: 670px; background: #fff; border-radius: 3px; text-align: center; -webkit-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); -moz-box-shadow: 0 6px 18px 0 rgba(0,0,0,.06); box-shadow: 0 6px 18px 0 rgba(0,0,0,.06);\" border=\"0\" width=\"95%\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
                 "<tbody>\n" +
                 "<tr>\n" +
