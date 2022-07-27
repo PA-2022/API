@@ -3,6 +3,7 @@ package pa.codeup.codeup.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import pa.codeup.codeup.dto.*;
 import pa.codeup.codeup.entities.PostWithUserAndForum;
@@ -40,12 +41,33 @@ public class PostService {
 
         Post currentPost = this.postRepository.save(post);
 
+        if(contentPost.length > 0){
+            currentPost.setTitle(contentPost[0].getContent());
+        }
+
         for (ContentPost content : contentPost) {
             content.setPostId(currentPost.getId());
             this.contentPostRepository.save(content);
         }
 
         return currentPost;
+    }
+
+    public Post updatePost(PostContent newPost, Post oldPost) {
+        oldPost.setTitle(newPost.getPost().getTitle());
+
+        if (newPost.getContentPost().length > 0) {
+            oldPost.setContent(newPost.getContentPost()[0].getContent());
+        }
+
+        this.contentPostRepository.deleteAllByPostId(oldPost.getId());
+        Post postUpdate = this.postRepository.save(oldPost);
+        for (ContentPost content : newPost.getContentPost()) {
+            content.setPostId(postUpdate.getId());
+            this.contentPostRepository.save(content);
+        }
+
+        return postUpdate;
     }
 
     public List<PostWithUserAndForum> getPostWithUserAndForumList(Long forumId, String category, int offset, int limit) throws Exception {
