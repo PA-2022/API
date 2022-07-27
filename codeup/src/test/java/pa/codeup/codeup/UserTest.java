@@ -48,5 +48,6 @@ class UserTest {
         /*int count = this.userRepository.findAllByUsernameLike("%"+user.getUsername()+"%").size();
         this.user.setUsername(this.user.getUsername() + (count > 0 ? count :""));
         this.user.setEmail(this.user.getEmail()+ (count > 0 ? count :""));*/
+    //
     }
 }
