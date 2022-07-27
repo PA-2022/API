@@ -24,7 +24,8 @@ public class ForumService {
 
 
     public Forum getForumById(Long id) {
-        return this.forumRepository.getForumById(id).toEntity();
+        ForumDao dao = this.forumRepository.getForumById(id);
+        return dao != null ? dao.toEntity() : null;
     }
 
     public ForumDao save(Forum forum) {

@@ -95,7 +95,7 @@ public class FriendController {
         try {
             return new ResponseEntity<>( this.friendService.getList(userId), HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("*****************"+e);
+            System.out.println(e.toString());
             throw new ResponseStatusException(NOT_ACCEPTABLE, "Error with request");
         }
     }
