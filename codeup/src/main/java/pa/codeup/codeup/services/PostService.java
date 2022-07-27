@@ -42,7 +42,7 @@ public class PostService {
         Post currentPost = this.postRepository.save(post);
 
         if(contentPost.length > 0){
-            currentPost.setTitle(contentPost[0].getContent());
+            currentPost.setContent(contentPost[0].getContent());
         }
 
         for (ContentPost content : contentPost) {
