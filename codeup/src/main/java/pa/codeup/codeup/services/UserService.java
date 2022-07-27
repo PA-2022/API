@@ -5,8 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pa.codeup.codeup.dto.AuthEntity;
-import pa.codeup.codeup.dto.Images;
-import pa.codeup.codeup.dto.Token;
+import pa.codeup.codeup.dto.ImagesDao;
+import pa.codeup.codeup.dto.TokenDao;
 import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.repositories.AuthRepository;
@@ -58,13 +58,13 @@ public class UserService {
     private String passwordChangeTokenCreation(String username, Long userId){
         String toEncodeTokenString = username + Instant.now();
         String token = Base64.getEncoder().encodeToString(toEncodeTokenString.getBytes()).replaceAll("[^a-zA-Z0-9]", "");
-        this.tokenRepository.save(new Token(null, token, userId, true));
+        this.tokenRepository.save(new TokenDao(null, token, userId, true));
         return token;
     }
 
-    public boolean invalidateToken(Token token) {
-        token.setActive(false);
-        this.tokenRepository.saveAndFlush(token);
+    public boolean invalidateToken(TokenDao tokenDao) {
+        tokenDao.setActive(false);
+        this.tokenRepository.saveAndFlush(tokenDao);
         return true;
     }
 
@@ -110,23 +110,23 @@ public class UserService {
     }
 
     public boolean changePassword(String password, String tokenStr) {
-        Token token = this.tokenRepository.getTokenByTokenEquals(tokenStr);
-        if(token == null || !token.isActive()) {
+        TokenDao tokenDao = this.tokenRepository.getTokenByTokenEquals(tokenStr);
+        if(tokenDao == null || !tokenDao.isActive()) {
             return false;
         }
-        UserDao user = this.userRepository.getUserById(token.getUserId());
+        UserDao user = this.userRepository.getUserById(tokenDao.getUserId());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
 
         this.userRepository.saveAndFlush(user);
-        this.invalidateToken(token);
+        this.invalidateToken(tokenDao);
         return true;
     }
 
     public boolean isTokenActive(String tokenStr) {
-        Token token = this.tokenRepository.getTokenByTokenEquals(tokenStr);
-        return token != null && token.isActive();
+        TokenDao tokenDao = this.tokenRepository.getTokenByTokenEquals(tokenStr);
+        return tokenDao != null && tokenDao.isActive();
     }
 
     public boolean emailUserLostPassword(String email) {
@@ -179,7 +179,7 @@ public class UserService {
 
         user.setProfilePictureUrl(url);
         user.setProfilePictureName(filename);
-        this.imageRepository.save(new Images(null, url, filename));
+        this.imageRepository.save(new ImagesDao(null, url, filename));
 
         this.userRepository.saveAndFlush(user);
         return url;

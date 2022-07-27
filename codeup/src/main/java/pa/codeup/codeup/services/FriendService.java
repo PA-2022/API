@@ -2,7 +2,7 @@ package pa.codeup.codeup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pa.codeup.codeup.dto.FriendDto;
+import pa.codeup.codeup.dto.FriendDao;
 import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.Friend;
 import pa.codeup.codeup.entities.Notification;
@@ -34,7 +34,7 @@ public class FriendService {
         if(friend == null) {
             throw new Exception("cant find friend");
         }
-        FriendDto existsFriend = this.friendRepository.findByUserIdAndFriendId(currentUserUd, friendId);
+        FriendDao existsFriend = this.friendRepository.findByUserIdAndFriendId(currentUserUd, friendId);
         if(existsFriend != null){
             throw new Exception("friend demand already exists");
         }
@@ -55,7 +55,7 @@ public class FriendService {
         if(friend == null) {
             throw new Exception("cant find friend");
         }
-        FriendDto existsFriend = this.friendRepository.findByUserIdAndFriendId(friendId, currentUserId);
+        FriendDao existsFriend = this.friendRepository.findByUserIdAndFriendId(friendId, currentUserId);
         if(existsFriend == null){
             throw new Exception("friend demand doesnt exists");
         }
@@ -69,8 +69,8 @@ public class FriendService {
         if(friend == null) {
             throw new Exception("cant find friend");
         }
-        FriendDto existsFriendA = this.friendRepository.findByUserIdAndFriendId(friendId, currentUserId);
-        FriendDto existsFriendB = this.friendRepository.findByUserIdAndFriendId(currentUserId, friendId);
+        FriendDao existsFriendA = this.friendRepository.findByUserIdAndFriendId(friendId, currentUserId);
+        FriendDao existsFriendB = this.friendRepository.findByUserIdAndFriendId(currentUserId, friendId);
         if(existsFriendA == null && existsFriendB == null){
             throw new Exception("cant find friend");
         }
@@ -78,8 +78,8 @@ public class FriendService {
     }
 
     public Friend getFriend(UserDao currentUser, Long friendId) {
-        FriendDto existsFriendA = this.friendRepository.findByUserIdAndFriendId(friendId, currentUser.getId());
-        FriendDto existsFriendB = this.friendRepository.findByUserIdAndFriendId(currentUser.getId(), friendId);
+        FriendDao existsFriendA = this.friendRepository.findByUserIdAndFriendId(friendId, currentUser.getId());
+        FriendDao existsFriendB = this.friendRepository.findByUserIdAndFriendId(currentUser.getId(), friendId);
         if(existsFriendA == null && existsFriendB == null) {
             return null;
         }
@@ -92,9 +92,9 @@ public class FriendService {
             throw new Exception("User doesnt exists");
         }
         List<UserAndFriend> userAreFriends = new ArrayList<>();
-        List<FriendDto> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
-        for (FriendDto friendDto: friendsDtos) {
-            Friend friend = friendDto.toEntity();
+        List<FriendDao> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
+        for (FriendDao friendDao : friendsDtos) {
+            Friend friend = friendDao.toEntity();
             Long friendId = Objects.equals(friend.getUserId(), currentUser.getId()) ? friend.getFriendId() : friend.getUserId();
             UserDao friendUser = this.userRepository.getUserById(friendId);
             userAreFriends.add(new UserAndFriend(friendUser, friend));
@@ -108,9 +108,9 @@ public class FriendService {
             throw new Exception("User doesnt exists");
         }
         List<Long> usersIds = new ArrayList<>();
-        List<FriendDto> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
-        for (FriendDto friendDto: friendsDtos) {
-            Friend friend = friendDto.toEntity();
+        List<FriendDao> friendsDtos = this.friendRepository.findByUserIdOrFriendId(currentUser.getId(), currentUser.getId());
+        for (FriendDao friendDao : friendsDtos) {
+            Friend friend = friendDao.toEntity();
             Long friendId = Objects.equals(friend.getUserId(), userId) ? friend.getFriendId() : friend.getUserId();
             usersIds.add(friendId);
         }

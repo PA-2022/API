@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "images")
-public class Images {
+public class ImagesDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +16,13 @@ public class Images {
     @Column(name = "name", nullable = false)
     private String imageName;
 
-    public Images(Long id, String imageUrl, String imageName) {
+    public ImagesDao(Long id, String imageUrl, String imageName) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.imageName = imageName;
     }
 
-    public Images() {
+    public ImagesDao() {
 
     }
 

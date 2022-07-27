@@ -1,14 +1,14 @@
 package pa.codeup.codeup.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pa.codeup.codeup.dto.FriendDto;
+import pa.codeup.codeup.dto.FriendDao;
 
 import java.util.List;
 
 
-public interface FriendRepository extends JpaRepository<FriendDto, Long> {
-    FriendDto findByFriendId(Long friendId);
-    FriendDto findByUserId(Long friendId);
-    FriendDto findByUserIdAndFriendId(Long userId, Long FriendId);
-    List<FriendDto> findByUserIdOrFriendId(Long userId, Long friendId);
+public interface FriendRepository extends JpaRepository<FriendDao, Long> {
+    FriendDao findByFriendId(Long friendId);
+    FriendDao findByUserId(Long friendId);
+    FriendDao findByUserIdAndFriendId(Long userId, Long FriendId);
+    List<FriendDao> findByUserIdOrFriendId(Long userId, Long friendId);
 }

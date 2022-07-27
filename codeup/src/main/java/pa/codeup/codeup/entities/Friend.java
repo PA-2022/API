@@ -1,11 +1,6 @@
 package pa.codeup.codeup.entities;
 
-import pa.codeup.codeup.dto.FriendDto;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import pa.codeup.codeup.dto.FriendDao;
 
 public class Friend {
 
@@ -53,8 +48,8 @@ public class Friend {
         isAccepted = accepted;
     }
 
-    public FriendDto toFriendDto() {
-        FriendDto dto = new FriendDto();
+    public FriendDao toFriendDto() {
+        FriendDao dto = new FriendDao();
         dto.setFriendId(this.friendId);
         dto.setAccepted(this.isAccepted);
         dto.setUserId(this.userId);

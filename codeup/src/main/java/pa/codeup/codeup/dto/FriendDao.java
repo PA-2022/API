@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "friends")
-public class FriendDto implements Serializable{
+public class FriendDao implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
