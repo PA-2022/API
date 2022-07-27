@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pa.codeup.codeup.dto.AuthEntity;
+import pa.codeup.codeup.dto.UserDao;
 import pa.codeup.codeup.entities.Forum;
+import pa.codeup.codeup.entities.User;
 import pa.codeup.codeup.services.AuthService;
 import pa.codeup.codeup.services.ForumService;
 
@@ -36,9 +38,13 @@ public class ForumController {
 
     @PostMapping("/add")
     public ResponseEntity<Long> createForum(@RequestBody @Valid Forum forum) {
-        String rights = this.authService.hasRight();
-        if(rights != null && rights.equals("ADMIN")) {
-            return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
+        UserDao user = this.authService.getAuthUser();
+        if(user != null) {
+            try{
+                return new ResponseEntity<>(this.forumService.save(forum).getId(), HttpStatus.OK);
+            } catch (Exception e){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Forum already exists");
+            }
         } else {
             throw new ResponseStatusException(UNAUTHORIZED);
         }
