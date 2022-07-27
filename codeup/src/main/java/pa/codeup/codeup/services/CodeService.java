@@ -35,12 +35,12 @@ public class CodeService {
 
     // }
 
-    public Object executeCode(ExternalCode code){
+    public ResponseEntity<Object> executeCode(ExternalCode code){
         String url = "http://46.105.14.4:8099/codeEditor";
         ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, code, Object.class);
-        Object responseBody = responseEntity.getBody();
-        // Object response = restTemplate.postForObject(url, code, ResponseOutputDAO.class);
-        return responseBody;
+        // Object responseBody = responseEntity.getBody();
+        
+        return responseEntity;
     }
 
     

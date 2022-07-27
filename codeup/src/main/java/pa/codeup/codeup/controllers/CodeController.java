@@ -25,7 +25,7 @@ public class CodeController {
     @ResponseBody
     public ResponseEntity<Object> executeCode(@RequestBody ExternalCode externalCode) throws ScriptException {
         
-        return ResponseEntity.ok(this.codeService.executeCode(externalCode));
+        return this.codeService.executeCode(externalCode);
         
     }
 }
